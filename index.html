@@ -10,531 +10,21 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #e63946;
-            --secondary-color: #1d3557;
-            --accent-color: #f77f00;
-            --light-color: #f1faee;
-            --dark-color: #1d3557;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            overflow-x: hidden;
-        }
-
-        /* Navbar Styles */
-        .navbar {
-            background: linear-gradient(135deg, var(--secondary-color), #457b9d);
-            padding: 15px 0;
-            transition: all 0.3s ease;
-        }
-
-        .navbar-brand {
-            font-weight: 700;
-            font-size: 1.5rem;
-            color: #fff !important;
-        }
-
-        .navbar-brand span {
-            color: var(--accent-color);
-        }
-
-        .nav-link {
-            color: #fff !important;
-            font-weight: 500;
-            margin: 0 10px;
-            transition: color 0.3s ease;
-        }
-
-        .nav-link:hover {
-            color: var(--accent-color) !important;
-        }
-
-        /* Hero Section */
-        .hero-section {
-            background: linear-gradient(135deg, var(--secondary-color) 0%, #457b9d 50%, #a8dadc 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-            padding-top: 100px;
-        }
-
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></svg>') repeat;
-            opacity: 0.5;
-            pointer-events: none;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-content h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            color: #fff;
-            line-height: 1.2;
-        }
-
-        .hero-content h1 span {
-            color: var(--accent-color);
-        }
-
-        .hero-content p {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.9);
-            margin: 20px 0 30px;
-        }
-
-        .price-badge {
-            display: inline-block;
-            background: var(--primary-color);
-            color: #fff;
-            padding: 10px 25px;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .product-price {
-            color: var(--primary-color);
-            font-weight: 700;
-            font-size: 1.1rem;
-            margin-top: 5px;
-        }
-
-        .btn-primary-custom {
-            background: var(--accent-color);
-            border: none;
-            padding: 15px 40px;
-            font-weight: 600;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary-custom:hover {
-            background: var(--primary-color);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .hero-bubbles {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        .bubble {
-            position: absolute;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
-            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.2);
-        }
-
-        .bubble-float {
-            animation: floatUp 8s ease-in-out infinite;
-        }
-
-        .bubble-drift {
-            animation: drift 10s ease-in-out infinite;
-        }
-
-        .bubble-rise {
-            animation: rise 12s linear infinite;
-        }
-
-        @keyframes floatUp {
-            0%, 100% { transform: translateY(0) translateX(0) scale(1); opacity: 0.7; }
-            50% { transform: translateY(-40px) translateX(20px) scale(1.1); opacity: 1; }
-        }
-
-        @keyframes drift {
-            0%, 100% { transform: translateX(0) translateY(0) rotate(0deg); }
-            25% { transform: translateX(30px) translateY(-20px) rotate(90deg); }
-            50% { transform: translateX(0) translateY(-40px) rotate(180deg); }
-            75% { transform: translateX(-30px) translateY(-20px) rotate(270deg); }
-        }
-
-        @keyframes rise {
-            0% { transform: translateY(100vh) scale(0); opacity: 0; }
-            10% { opacity: 0.8; }
-            90% { opacity: 0.8; }
-            100% { transform: translateY(-100px) scale(1); opacity: 0; }
-        }
-
-        /* About Section */
-        .about-section {
-            padding: 100px 0;
-            background: #fff;
-        }
-
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--secondary-color);
-            margin-bottom: 20px;
-        }
-
-        .section-title span {
-            color: var(--primary-color);
-        }
-
-        .about-content p {
-            font-size: 1.1rem;
-            color: #666;
-            line-height: 1.8;
-        }
-
-        .about-stats {
-            display: flex;
-            gap: 40px;
-            margin-top: 30px;
-        }
-
-        .stat-item h3 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--accent-color);
-        }
-
-        .stat-item p {
-            font-size: 0.9rem;
-            color: #666;
-            margin: 0;
-        }
-
-        /* Products Section */
-        .products-section {
-            padding: 100px 0;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        }
-
-        .products-section .row {
-            display: flex;
-            flex-wrap: wrap;
-        }
-
-        .products-section [class*="col-"] {
-            display: flex;
-            margin-bottom: 30px;
-        }
-
-        .product-card {
-            background: #fff;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-            transition: all 0.4s ease;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-        }
-
-        .product-image {
-            height: 280px;
-            overflow: hidden;
-            background: linear-gradient(135deg, #f1faee 0%, #a8dadc 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .product-image img {
-            max-height: 100%;
-            max-width: 100%;
-            object-fit: contain;
-            transition: transform 0.4s ease;
-        }
-
-        .product-card:hover .product-image img {
-            transform: scale(1.1);
-        }
-
-        .product-info {
-            padding: 25px;
-            text-align: center;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .product-info h5 {
-            font-weight: 600;
-            color: var(--secondary-color);
-            margin-bottom: 10px;
-        }
-
-        .product-info p {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        /* Features Section */
-        .features-section {
-            padding: 100px 0;
-            background: var(--secondary-color);
-        }
-
-        .feature-box {
-            text-align: center;
-            padding: 40px 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            transition: all 0.3s ease;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        .feature-box:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-5px);
-        }
-
-        .feature-icon {
-            width: 70px;
-            height: 70px;
-            background: var(--accent-color);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            flex-shrink: 0;
-        }
-
-        .feature-icon i {
-            font-size: 1.8rem;
-            color: #fff;
-        }
-
-        .feature-box h4 {
-            color: #fff;
-            font-weight: 600;
-            margin-bottom: 15px;
-            font-size: 1.1rem;
-        }
-
-        .feature-box p {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.85rem;
-            margin: 0;
-            word-wrap: break-word;
-        }
-
-        /* Contact Section */
-        .contact-section {
-            padding: 100px 0;
-            background: #fff;
-        }
-
-        .contact-info-box {
-            background: linear-gradient(135deg, var(--secondary-color), #457b9d);
-            padding: 50px 40px;
-            border-radius: 20px;
-            color: #fff;
-            height: 100%;
-        }
-
-        .contact-info-item {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 30px;
-        }
-
-        .contact-info-item i {
-            font-size: 1.5rem;
-            color: var(--accent-color);
-            margin-right: 20px;
-            margin-top: 5px;
-        }
-
-        .contact-info-item h5 {
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .contact-info-item p {
-            margin: 0;
-            opacity: 0.9;
-            font-size: 0.95rem;
-        }
-
-        .contact-form {
-            background: #f8f9fa;
-            padding: 50px 40px;
-            border-radius: 20px;
-        }
-
-        .form-control {
-            border: 2px solid #e9ecef;
-            padding: 15px 20px;
-            border-radius: 10px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .form-control:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 0.2rem rgba(247, 127, 0, 0.15);
-        }
-
-        .btn-submit {
-            background: var(--accent-color);
-            border: none;
-            padding: 15px 50px;
-            font-weight: 600;
-            border-radius: 50px;
-            color: #fff;
-            transition: all 0.3s ease;
-        }
-
-        .btn-submit:hover {
-            background: var(--primary-color);
-            color: #fff;
-            transform: translateY(-3px);
-        }
-
-        /* Footer */
-        .footer {
-            background: var(--dark-color);
-            color: #fff;
-            padding: 60px 0 30px;
-        }
-
-        .footer-logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-
-        .footer-logo span {
-            color: var(--accent-color);
-        }
-
-        .footer p {
-            opacity: 0.8;
-            line-height: 1.8;
-        }
-
-        .footer-links h5 {
-            font-weight: 600;
-            margin-bottom: 25px;
-            color: var(--accent-color);
-        }
-
-        .footer-links ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .footer-links ul li {
-            margin-bottom: 12px;
-        }
-
-        .footer-links ul li a {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer-links ul li a:hover {
-            color: var(--accent-color);
-        }
-
-        .social-icons a {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 45px;
-            height: 45px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            color: #fff;
-            margin-right: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .social-icons a:hover {
-            background: var(--accent-color);
-            transform: translateY(-3px);
-        }
-
-        .footer-bottom {
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding-top: 30px;
-            margin-top: 40px;
-            text-align: center;
-        }
-
-        .footer-bottom p {
-            margin: 0;
-            font-size: 0.9rem;
-        }
-
-        /* Animations */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero-content h1 {
-                font-size: 2.5rem;
-            }
-
-            .about-stats {
-                flex-wrap: wrap;
-                gap: 20px;
-            }
-
-            .section-title {
-                font-size: 2rem;
-            }
-        }
-    </style>
+    <!-- Leaflet Map CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Announcement Bar -->
+    <div class="announcement-bar" id="announcementBar">
+        <div class="announcement-inner">
+            <span class="announcement-badge">NEW</span>
+            <span class="announcement-text">🎉 Introducing our new <strong>Paneer Soda</strong> variant — Now available in 500ml! &nbsp;|&nbsp; Free delivery on orders above 200 cases.</span>
+        </div>
+        <button class="announcement-close" id="announcementClose" aria-label="Close">✕</button>
+    </div>
+
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
@@ -557,6 +47,15 @@
                         <a class="nav-link" href="#features">Why Us</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="#testimonials">Reviews</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#dealer">Dealer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#distributors">Distributors</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="#contact">Contact</a>
                     </li>
                 </ul>
@@ -566,42 +65,18 @@
 
     <!-- Hero Section -->
     <section class="hero-section" id="home">
-        <div class="hero-bubbles">
-            <!-- Static floating bubbles -->
-            <div class="bubble bubble-float" style="width: 60px; height: 60px; left: 5%; top: 20%; animation-delay: 0s;"></div>
-            <div class="bubble bubble-drift" style="width: 40px; height: 40px; left: 15%; top: 40%; animation-delay: 1s;"></div>
-            <div class="bubble bubble-float" style="width: 80px; height: 80px; left: 25%; top: 70%; animation-delay: 2s;"></div>
-            <div class="bubble bubble-drift" style="width: 30px; height: 30px; left: 35%; top: 30%; animation-delay: 0.5s;"></div>
-            <div class="bubble bubble-float" style="width: 50px; height: 50px; left: 45%; top: 80%; animation-delay: 3s;"></div>
-            <div class="bubble bubble-drift" style="width: 70px; height: 70px; left: 55%; top: 25%; animation-delay: 1.5s;"></div>
-            <div class="bubble bubble-float" style="width: 45px; height: 45px; left: 65%; top: 60%; animation-delay: 2.5s;"></div>
-            <div class="bubble bubble-drift" style="width: 55px; height: 55px; left: 75%; top: 45%; animation-delay: 0.8s;"></div>
-            <div class="bubble bubble-float" style="width: 35px; height: 35px; left: 85%; top: 75%; animation-delay: 1.2s;"></div>
-            <div class="bubble bubble-drift" style="width: 65px; height: 65px; left: 92%; top: 35%; animation-delay: 2.2s;"></div>
-            <!-- Rising bubbles -->
-            <div class="bubble bubble-rise" style="width: 20px; height: 20px; left: 10%; animation-delay: 0s;"></div>
-            <div class="bubble bubble-rise" style="width: 15px; height: 15px; left: 20%; animation-delay: 2s;"></div>
-            <div class="bubble bubble-rise" style="width: 25px; height: 25px; left: 30%; animation-delay: 4s;"></div>
-            <div class="bubble bubble-rise" style="width: 18px; height: 18px; left: 40%; animation-delay: 1s;"></div>
-            <div class="bubble bubble-rise" style="width: 22px; height: 22px; left: 50%; animation-delay: 3s;"></div>
-            <div class="bubble bubble-rise" style="width: 16px; height: 16px; left: 60%; animation-delay: 5s;"></div>
-            <div class="bubble bubble-rise" style="width: 20px; height: 20px; left: 70%; animation-delay: 2.5s;"></div>
-            <div class="bubble bubble-rise" style="width: 24px; height: 24px; left: 80%; animation-delay: 0.5s;"></div>
-            <div class="bubble bubble-rise" style="width: 14px; height: 14px; left: 90%; animation-delay: 3.5s;"></div>
-            <div class="bubble bubble-rise" style="width: 19px; height: 19px; left: 95%; animation-delay: 6s;"></div>
-        </div>
+        <video class="hero-video" autoplay muted loop playsinline id="heroVideo">
+            <source src="Machinery/VFC_Agro_foods.mp4" type="video/mp4">
+        </video>
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6">
+                <div class="col-lg-8">
                     <div class="hero-content">
                         <div class="price-badge">Only ₹10 per bottle!</div>
                         <h1>Refreshing <span>Beverages</span> for Every Moment</h1>
                         <p>VFC Agro Food Products Pvt. Ltd - Your trusted partner in premium soft drinks manufacturing. We craft delicious, refreshing beverages with the finest ingredients.</p>
                         <a href="#products" class="btn btn-primary-custom btn-lg">Explore Our Products</a>
                     </div>
-                </div>
-                <div class="col-lg-6 text-center">
-                    <img src="SINGLE/orange.jpeg" alt="VFC Product" class="img-fluid" style="max-height: 500px; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.3));">
                 </div>
             </div>
         </div>
@@ -619,6 +94,24 @@
                         <h2 class="section-title">About <span>VFC Agro Foods</span></h2>
                         <p>VFC Agro Food Products Pvt. Ltd is a leading soft drinks manufacturer based in Dindigul, Tamil Nadu. We are committed to producing high-quality, refreshing beverages that meet the highest standards of taste and safety.</p>
                         <p>With state-of-the-art manufacturing facilities and a dedicated team, we ensure that every bottle that leaves our factory delivers the perfect taste and quality our customers expect.</p>
+                        <div class="about-stats-grid">
+                            <div class="about-stat-item fade-in">
+                                <span class="about-stat-num" data-target="5">0</span><span class="about-stat-suffix">+</span>
+                                <p>Years of Excellence</p>
+                            </div>
+                            <div class="about-stat-item fade-in">
+                                <span class="about-stat-num" data-target="50">0</span><span class="about-stat-suffix">L+</span>
+                                <p>Bottles Sold</p>
+                            </div>
+                            <div class="about-stat-item fade-in">
+                                <span class="about-stat-num" data-target="9">0</span><span class="about-stat-suffix"></span>
+                                <p>Flavors</p>
+                            </div>
+                            <div class="about-stat-item fade-in">
+                                <span class="about-stat-num" data-target="16">0</span><span class="about-stat-suffix">+</span>
+                                <p>Cities Served</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -628,14 +121,36 @@
     <!-- Products Section -->
     <section class="products-section" id="products">
         <div class="container">
-            <div class="text-center mb-5">
+            <div class="text-center mb-4">
                 <h2 class="section-title">Our <span>Products</span></h2>
                 <p class="text-muted">Discover our range of refreshing soft drinks - <strong style="color: var(--primary-color);">All at just ₹10!</strong></p>
             </div>
-            <div class="row">
+
+            <!-- Filter + Search Bar -->
+            <div class="product-filter-bar mb-5">
+                <div class="filter-search-wrap">
+                    <i class="bi bi-search filter-search-icon"></i>
+                    <input type="text" id="productSearch" class="product-search-input" placeholder="Search a flavor…">
+                </div>
+                <div class="flavor-filter-chips" id="filterChips">
+                    <button class="flavor-chip active" data-tag="all">All</button>
+                    <button class="flavor-chip" data-tag="fruit">🍎 Fruit</button>
+                    <button class="flavor-chip" data-tag="citrus">🍋 Citrus</button>
+                    <button class="flavor-chip" data-tag="tropical">🥭 Tropical</button>
+                    <button class="flavor-chip" data-tag="spiced">🌿 Spiced</button>
+                    <button class="flavor-chip" data-tag="classic">⭐ Classic</button>
+                </div>
+            </div>
+
+            <div id="noProductsMsg" class="no-products-msg" style="display:none;">
+                <i class="bi bi-emoji-frown"></i>
+                <p>No flavors match your search. <a href="#" id="clearFilter">Clear filter</a></p>
+            </div>
+
+            <div class="row" id="productsGrid">
                 <!-- Product 1 - Apple -->
                 <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="product-card fade-in">
+                    <div class="product-card fade-in" data-tag="fruit" data-name="apple">
                         <div class="product-image">
                             <img src="SINGLE/apple.jpeg" alt="Apple Drink">
                         </div>
@@ -647,7 +162,7 @@
                 </div>
                 <!-- Product 2 - Blueberry -->
                 <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="product-card fade-in">
+                    <div class="product-card fade-in" data-tag="fruit" data-name="blueberry">
                         <div class="product-image">
                             <img src="SINGLE/blueberry.jpeg" alt="Blueberry Drink">
                         </div>
@@ -659,7 +174,7 @@
                 </div>
                 <!-- Product 3 - Grape -->
                 <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="product-card fade-in">
+                    <div class="product-card fade-in" data-tag="fruit" data-name="grape">
                         <div class="product-image">
                             <img src="SINGLE/grape.jpeg" alt="Grape Drink">
                         </div>
@@ -671,7 +186,7 @@
                 </div>
                 <!-- Product 4 - Guava -->
                 <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="product-card fade-in">
+                    <div class="product-card fade-in" data-tag="tropical" data-name="guava">
                         <div class="product-image">
                             <img src="SINGLE/guava.jpeg" alt="Guava Drink">
                         </div>
@@ -683,7 +198,7 @@
                 </div>
                 <!-- Product 5 - Jeera -->
                 <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="product-card fade-in">
+                    <div class="product-card fade-in" data-tag="spiced" data-name="jeera">
                         <div class="product-image">
                             <img src="SINGLE/jeera.jpeg" alt="Jeera Drink">
                         </div>
@@ -695,7 +210,7 @@
                 </div>
                 <!-- Product 6 - Lemon -->
                 <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="product-card fade-in">
+                    <div class="product-card fade-in" data-tag="citrus" data-name="lemon">
                         <div class="product-image">
                             <img src="SINGLE/lemon.jpeg" alt="Lemon Drink">
                         </div>
@@ -707,7 +222,7 @@
                 </div>
                 <!-- Product 7 - Mango -->
                 <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="product-card fade-in">
+                    <div class="product-card fade-in" data-tag="tropical" data-name="mango">
                         <div class="product-image">
                             <img src="SINGLE/mango.jpeg" alt="Mango Drink">
                         </div>
@@ -719,7 +234,7 @@
                 </div>
                 <!-- Product 8 - Orange -->
                 <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="product-card fade-in">
+                    <div class="product-card fade-in" data-tag="citrus" data-name="orange">
                         <div class="product-image">
                             <img src="SINGLE/orange.jpeg" alt="Orange Drink">
                         </div>
@@ -731,7 +246,7 @@
                 </div>
                 <!-- Product 9 - Paneer Soda -->
                 <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="product-card fade-in">
+                    <div class="product-card fade-in" data-tag="classic" data-name="paneer">
                         <div class="product-image">
                             <img src="SINGLE/paneer.jpeg" alt="Paneer Soda">
                         </div>
@@ -793,6 +308,258 @@
         </div>
     </section>
 
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section" id="testimonials">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title">What <span>They Say</span></h2>
+                <p class="text-muted">Trusted by distributors and retailers across Tamil Nadu</p>
+            </div>
+            <div class="testimonials-track-wrap">
+                <div class="testimonials-track" id="testimonialsTrack">
+                    <!-- Card 1 -->
+                    <div class="testimonial-card">
+                        <div class="t-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                        <p class="t-text">"VFC's lemon and mango variants fly off the shelves faster than any other brand we stock. The ₹10 price point is a game-changer for our kirana store."</p>
+                        <div class="t-author">
+                            <div class="t-avatar">RK</div>
+                            <div>
+                                <div class="t-name">Rajan Kumar</div>
+                                <div class="t-role">Kirana Store Owner, Madurai</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="testimonial-card">
+                        <div class="t-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                        <p class="t-text">"We've been distributing VFC drinks for 3 years. The supply chain is incredibly reliable and the factory team is always responsive. Highly recommended for bulk orders."</p>
+                        <div class="t-author">
+                            <div class="t-avatar">SM</div>
+                            <div>
+                                <div class="t-name">Senthil Murugan</div>
+                                <div class="t-role">Wholesale Distributor, Coimbatore</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="testimonial-card">
+                        <div class="t-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                        <p class="t-text">"Our canteen orders 500 cases of Paneer Soda and Jeera every month. Quality is consistently excellent and delivery is always on time. Great partnership!"</p>
+                        <div class="t-author">
+                            <div class="t-avatar">PV</div>
+                            <div>
+                                <div class="t-name">Priya Venkatesh</div>
+                                <div class="t-role">Canteen Manager, Salem</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 4 -->
+                    <div class="testimonial-card">
+                        <div class="t-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                        <p class="t-text">"The guava and grape flavors are a massive hit at our events. Affordable, tasty, and presented beautifully. VFC is our go-to beverage partner for all occasions."</p>
+                        <div class="t-author">
+                            <div class="t-avatar">AK</div>
+                            <div>
+                                <div class="t-name">Arjun Krishnamoorthy</div>
+                                <div class="t-role">Event Caterer, Trichy</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 5 -->
+                    <div class="testimonial-card">
+                        <div class="t-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+                        <p class="t-text">"Switched from another brand 6 months ago and haven't looked back. FSSAI certified, great taste, and the team at VFC genuinely cares about quality."</p>
+                        <div class="t-author">
+                            <div class="t-avatar">DM</div>
+                            <div>
+                                <div class="t-name">Deepa Mani</div>
+                                <div class="t-role">Supermarket Buyer, Tirunelveli</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Navigation dots -->
+                <div class="t-dots" id="tDots"></div>
+                <!-- Navigation arrows -->
+                <button class="t-arrow t-arrow-prev" id="tPrev">&#8249;</button>
+                <button class="t-arrow t-arrow-next" id="tNext">&#8250;</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dealer / Bulk Order Section -->
+    <section class="dealer-section" id="dealer">
+        <div class="container">
+            <div class="text-center mb-5">
+                <div class="dealer-eyebrow">B2B &amp; Wholesale</div>
+                <h2 class="section-title text-white">Become a <span style="color:var(--accent-color);">Distributor</span></h2>
+                <p class="text-white-50">Partner with VFC Agro Foods &mdash; bulk orders, dealer pricing, and priority supply</p>
+            </div>
+            <div class="row g-4 align-items-start">
+                <!-- Left: Benefits -->
+                <div class="col-lg-4">
+                    <div class="dealer-benefits">
+                        <div class="dealer-benefit-item">
+                            <div class="db-icon"><i class="bi bi-patch-check-fill"></i></div>
+                            <div>
+                                <h6>Exclusive Dealer Pricing</h6>
+                                <p>Significant margins below MRP for registered bulk buyers.</p>
+                            </div>
+                        </div>
+                        <div class="dealer-benefit-item">
+                            <div class="db-icon"><i class="bi bi-truck"></i></div>
+                            <div>
+                                <h6>Direct Factory Supply</h6>
+                                <p>No middlemen &mdash; fresh stock delivered straight from Dindigul.</p>
+                            </div>
+                        </div>
+                        <div class="dealer-benefit-item">
+                            <div class="db-icon"><i class="bi bi-boxes"></i></div>
+                            <div>
+                                <h6>All 9 Flavors Available</h6>
+                                <p>Custom mix-and-match orders accepted for minimum 500 cases.</p>
+                            </div>
+                        </div>
+                        <div class="dealer-benefit-item">
+                            <div class="db-icon"><i class="bi bi-headset"></i></div>
+                            <div>
+                                <h6>Dedicated Account Manager</h6>
+                                <p>Personal support for all your ordering and logistics needs.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Right: Form -->
+                <div class="col-lg-8">
+                    <div class="dealer-form-card">
+                        <h4 class="dealer-form-title">Submit Your Enquiry</h4>
+                        <p class="dealer-form-sub">Fill in the details below &mdash; we respond within 24 hours.</p>
+                        <form id="dealerForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="dealer-label">Business / Shop Name <span class="req">*</span></label>
+                                    <input type="text" name="business_name" class="dealer-input" placeholder="e.g. Raj Traders" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="dealer-label">Contact Person <span class="req">*</span></label>
+                                    <input type="text" name="contact_person" class="dealer-input" placeholder="Your name" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="dealer-label">Phone Number <span class="req">*</span></label>
+                                    <input type="tel" name="phone" class="dealer-input" placeholder="+91 XXXXX XXXXX" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="dealer-label">Email Address</label>
+                                    <input type="email" name="email" class="dealer-input" placeholder="optional">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="dealer-label">City / District <span class="req">*</span></label>
+                                    <input type="text" name="city" class="dealer-input" placeholder="e.g. Madurai" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="dealer-label">Expected Monthly Order <span class="req">*</span></label>
+                                    <select name="order_quantity" class="dealer-input" required>
+                                        <option value="" disabled selected>Select quantity range</option>
+                                        <option value="100-500 cases">100 – 500 cases</option>
+                                        <option value="500-1000 cases">500 – 1,000 cases</option>
+                                        <option value="1000-5000 cases">1,000 – 5,000 cases</option>
+                                        <option value="5000+ cases">5,000+ cases</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label class="dealer-label">Flavors of Interest</label>
+                                    <div class="flavor-checkboxes" id="flavorCheckboxes">
+                                        <label class="flavor-check"><input type="checkbox" name="flavors" value="Apple"> Apple</label>
+                                        <label class="flavor-check"><input type="checkbox" name="flavors" value="Blueberry"> Blueberry</label>
+                                        <label class="flavor-check"><input type="checkbox" name="flavors" value="Grape"> Grape</label>
+                                        <label class="flavor-check"><input type="checkbox" name="flavors" value="Guava"> Guava</label>
+                                        <label class="flavor-check"><input type="checkbox" name="flavors" value="Jeera"> Jeera</label>
+                                        <label class="flavor-check"><input type="checkbox" name="flavors" value="Lemon"> Lemon</label>
+                                        <label class="flavor-check"><input type="checkbox" name="flavors" value="Mango"> Mango</label>
+                                        <label class="flavor-check"><input type="checkbox" name="flavors" value="Orange"> Orange</label>
+                                        <label class="flavor-check"><input type="checkbox" name="flavors" value="Paneer Soda"> Paneer Soda</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <label class="dealer-label">Additional Notes</label>
+                                    <textarea name="message" class="dealer-input" rows="3" placeholder="Any special requirements, delivery preferences, etc."></textarea>
+                                </div>
+                                <div class="col-12 d-flex align-items-center gap-3 flex-wrap">
+                                    <button type="submit" class="btn-dealer-submit" id="dealerSubmitBtn">
+                                        <i class="bi bi-send-fill me-2"></i>Submit Enquiry
+                                    </button>
+                                    <span id="dealerStatus" class="dealer-status-msg"></span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Distributor Map Section -->
+    <section class="distributor-section" id="distributors">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title text-white">Our <span style="color: var(--accent-color);">Distribution Network</span></h2>
+                <p class="text-white-50">Delivering refreshment across Tamil Nadu & beyond</p>
+            </div>
+            <!-- Stats Row -->
+            <div class="row g-4 mb-5 text-center">
+                <div class="col-6 col-md-3">
+                    <div class="dist-stat-box">
+                        <div class="dist-stat-number" id="statCities">0</div>
+                        <div class="dist-stat-label">Cities Covered</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="dist-stat-box">
+                        <div class="dist-stat-number" id="statDist">0</div>
+                        <div class="dist-stat-label">Distributors</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="dist-stat-box">
+                        <div class="dist-stat-number" id="statDistricts">0</div>
+                        <div class="dist-stat-label">Districts</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="dist-stat-box">
+                        <div class="dist-stat-number" id="statStates">0</div>
+                        <div class="dist-stat-label">States</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Map + Sidebar -->
+            <div class="row g-4 align-items-start">
+                <div class="col-lg-8">
+                    <div class="map-wrapper">
+                        <div id="distributorMap"></div>
+                        <div class="map-legend">
+                            <span class="legend-dot legend-hq"></span> Headquarters
+                            <span class="legend-dot legend-city ms-3"></span> Distribution City
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="distributor-sidebar">
+                        <div class="sidebar-search">
+                            <input type="text" id="citySearch" placeholder="🔍  Search city..." class="dist-search-input">
+                        </div>
+                        <div class="city-list" id="cityList"></div>
+                        <div class="become-distributor-cta">
+                            <p class="cta-text">Want to become a distributor?</p>
+                            <a href="#contact" class="btn btn-become-dist">Enquire Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Contact Section -->
     <section class="contact-section" id="contact">
         <div class="container">
@@ -817,7 +584,7 @@
                             <i class="bi bi-envelope-fill"></i>
                             <div>
                                 <h5>Email</h5>
-                                <p>vfcagrofoods@gmail.com</p>
+                                <p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b8cededbd9dfcad7ded7d7dccbf8dfd5d9d1d496dbd7d5">[email&#160;protected]</a></p>
                             </div>
                         </div>
                         <div class="contact-info-item">
@@ -837,22 +604,23 @@
                 </div>
                 <div class="col-lg-7">
                     <div class="contact-form">
-                        <form>
+                        <form id="contactForm">
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control" placeholder="Your Name" required>
+                                    <input type="text" name="from_name" class="form-control" placeholder="Your Name" required>
                                 </div>
                                 <div class="col-md-6">
-                                    <input type="email" class="form-control" placeholder="Your Email" required>
+                                    <input type="email" name="from_email" class="form-control" placeholder="Your Email" required>
                                 </div>
                                 <div class="col-12">
-                                    <input type="text" class="form-control" placeholder="Subject">
+                                    <input type="text" name="subject" class="form-control" placeholder="Subject">
                                 </div>
                                 <div class="col-12">
-                                    <textarea class="form-control" rows="5" placeholder="Your Message" required></textarea>
+                                    <textarea name="message" class="form-control" rows="5" placeholder="Your Message" required></textarea>
                                 </div>
                                 <div class="col-12">
-                                    <button type="submit" class="btn btn-submit">Send Message</button>
+                                    <button type="submit" class="btn btn-submit" id="submitBtn">Send Message</button>
+                                    <span id="formStatus" class="ms-3" style="font-weight: 500;"></span>
                                 </div>
                             </div>
                         </form>
@@ -895,7 +663,7 @@
                         <h5>Contact Info</h5>
                         <ul>
                             <li><i class="bi bi-geo-alt me-2"></i>Dindigul - 624 003</li>
-                            <li><i class="bi bi-envelope me-2"></i>vfcagrofoods@gmail.com</li>
+                            <li><i class="bi bi-envelope me-2"></i><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="92e4f4f1f3f5e0fdf4fdfdf6e1d2f5fff3fbfebcf1fdff">[email&#160;protected]</a></li>
                         </ul>
                     </div>
                 </div>
@@ -906,7 +674,9 @@
             </div>
         </div>
     </footer>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         window.addEventListener('scroll', function() {
             const navbar = document.querySelector('.navbar');
@@ -942,6 +712,450 @@
             });
         }, { threshold: 0.1 });
         fadeElements.forEach(el => observer.observe(el));
+
+        // Set hero video playback speed to 0.75
+        const heroVideo = document.getElementById('heroVideo');
+        if (heroVideo) {
+            heroVideo.playbackRate = 0.75;
+        }
+
+        // ===== Contact Form - Send via Backend =====
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const btn = document.getElementById('submitBtn');
+            const status = document.getElementById('formStatus');
+            btn.disabled = true;
+            btn.textContent = 'Sending...';
+            status.textContent = '';
+
+            const formData = {
+                from_name: this.from_name.value,
+                from_email: this.from_email.value,
+                subject: this.subject.value,
+                message: this.message.value
+            };
+
+            fetch('/send-email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    status.textContent = 'Message sent successfully!';
+                    status.style.color = '#28a745';
+                    document.getElementById('contactForm').reset();
+                } else {
+                    status.textContent = data.error || 'Failed to send. Please try again.';
+                    status.style.color = '#dc3545';
+                }
+                btn.textContent = 'Send Message';
+                btn.disabled = false;
+            })
+                  .catch(err => {
+                status.textContent = 'Network error. Please try again.';
+                status.style.color = '#dc3545';
+                btn.textContent = 'Send Message';
+                btn.disabled = false;
+            });
+        });
     </script>
+
+    <!-- WhatsApp Float Button -->
+    <a class="whatsapp-float" href="https://wa.me/919XXXXXXXXX?text=Hi%20VFC%20Agro%20Foods%2C%20I%27m%20interested%20in%20placing%20a%20bulk%20order." target="_blank" rel="noopener" title="Order on WhatsApp">
+        <i class="bi bi-whatsapp"></i>
+        <span class="whatsapp-float-label">Order Now</span>
+    </a>
+
+
+    <!-- Product Lightbox -->
+    <div class="lightbox-overlay" id="lightboxOverlay">
+        <button class="lightbox-close" id="lightboxClose">✕</button>
+        <button class="lightbox-prev" id="lightboxPrev">&#8249;</button>
+        <button class="lightbox-next" id="lightboxNext">&#8250;</button>
+        <div class="lightbox-content">
+            <img id="lightboxImg" src="" alt="">
+            <div class="lightbox-caption" id="lightboxCaption"></div>
+        </div>
+    </div>
+
+    <!-- ===== DISTRIBUTOR MAP SCRIPT ===== -->
+    <script>
+        // Distributor data - cities VFC supplies to
+        const distributors = [
+            { city: 'Dindigul', lat: 10.3673, lng: 77.9803, district: 'Dindigul', isHQ: true,  distributors: 3 },
+            { city: 'Madurai',  lat: 9.9252,  lng: 78.1198, district: 'Madurai',   isHQ: false, distributors: 5 },
+            { city: 'Trichy',   lat: 10.7905, lng: 78.7047, district: 'Tiruchirappalli', isHQ: false, distributors: 4 },
+            { city: 'Coimbatore', lat: 11.0168, lng: 76.9558, district: 'Coimbatore', isHQ: false, distributors: 6 },
+            { city: 'Salem',    lat: 11.6643, lng: 78.1460, district: 'Salem',     isHQ: false, distributors: 3 },
+            { city: 'Erode',    lat: 11.3410, lng: 77.7172, district: 'Erode',     isHQ: false, distributors: 2 },
+            { city: 'Namakkal', lat: 11.2189, lng: 78.1674, district: 'Namakkal',  isHQ: false, distributors: 2 },
+            { city: 'Karur',    lat: 10.9601, lng: 78.0766, district: 'Karur',     isHQ: false, distributors: 2 },
+            { city: 'Palani',   lat: 10.4478, lng: 77.5216, district: 'Dindigul',  isHQ: false, distributors: 2 },
+            { city: 'Theni',    lat: 10.0104, lng: 77.4770, district: 'Theni',     isHQ: false, distributors: 2 },
+            { city: 'Virudhunagar', lat: 9.5852, lng: 77.9571, district: 'Virudhunagar', isHQ: false, distributors: 2 },
+            { city: 'Tirunelveli', lat: 8.7139, lng: 77.7567, district: 'Tirunelveli', isHQ: false, distributors: 3 },
+            { city: 'Sivakasi', lat: 9.4533,  lng: 77.7969, district: 'Virudhunagar', isHQ: false, distributors: 1 },
+            { city: 'Pollachi', lat: 10.6558, lng: 77.0076, district: 'Coimbatore', isHQ: false, distributors: 1 },
+            { city: 'Ooty',     lat: 11.4102, lng: 76.6950, district: 'Nilgiris',  isHQ: false, distributors: 1 },
+            { city: 'Bangalore', lat: 12.9716, lng: 77.5946, district: 'Karnataka', isHQ: false, distributors: 2 },
+        ];
+
+        // Animate counter
+        function animateCounter(el, target, duration = 1500) {
+            let start = 0;
+            const step = Math.ceil(target / (duration / 16));
+            const timer = setInterval(() => {
+                start += step;
+                if (start >= target) { start = target; clearInterval(timer); }
+                el.textContent = start + (target > 9 ? '+' : '');
+            }, 16);
+        }
+
+        // Count-up on section scroll into view
+        const distSection = document.getElementById('distributors');
+        const distObserver = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                animateCounter(document.getElementById('statCities'), distributors.length);
+                animateCounter(document.getElementById('statDist'), distributors.reduce((a,d) => a + d.distributors, 0));
+                const districts = new Set(distributors.map(d => d.district)).size;
+                animateCounter(document.getElementById('statDistricts'), districts);
+                animateCounter(document.getElementById('statStates'), 2);
+                distObserver.disconnect();
+            }
+        }, { threshold: 0.2 });
+        distSection && distObserver.observe(distSection);
+
+        // Initialize Leaflet map
+        const map = L.map('distributorMap', {
+            center: [10.5, 78.0],
+            zoom: 7,
+            zoomControl: true,
+            scrollWheelZoom: false
+        });
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            attribution: '© OpenStreetMap © CARTO',
+            subdomains: 'abcd',
+            maxZoom: 19
+        }).addTo(map);
+
+        // Custom icons
+        const hqIcon = L.divIcon({
+            className: '',
+            html: `<div class="map-marker-hq"><i class="bi bi-building"></i></div>`,
+            iconSize: [38, 38], iconAnchor: [19, 19]
+        });
+        const cityIcon = L.divIcon({
+            className: '',
+            html: `<div class="map-marker-city"></div>`,
+            iconSize: [14, 14], iconAnchor: [7, 7]
+        });
+
+        let markers = [];
+
+        // Build city list sidebar
+        function buildCityList(filter = '') {
+            const list = document.getElementById('cityList');
+            list.innerHTML = '';
+            const filtered = distributors.filter(d =>
+                d.city.toLowerCase().includes(filter.toLowerCase()) ||
+                d.district.toLowerCase().includes(filter.toLowerCase())
+            );
+            filtered.forEach(d => {
+                const item = document.createElement('div');
+                item.className = 'city-list-item' + (d.isHQ ? ' hq-item' : '');
+                item.innerHTML = `
+                    <div class="city-name">${d.isHQ ? '🏭 ' : '📍 '}${d.city}</div>
+                    <div class="city-meta">${d.district} &bull; ${d.distributors} distributor${d.distributors > 1 ? 's' : ''}</div>
+                `;
+                item.addEventListener('click', () => {
+                    map.setView([d.lat, d.lng], 10, { animate: true });
+                    // find & open popup
+                    markers.forEach(m => { if (m.cityName === d.city) m.openPopup(); });
+                });
+                list.appendChild(item);
+            });
+            if (filtered.length === 0) {
+                list.innerHTML = '<div class="no-results">No cities found.</div>';
+            }
+        }
+
+        // Place markers
+        distributors.forEach(d => {
+            const marker = L.marker([d.lat, d.lng], { icon: d.isHQ ? hqIcon : cityIcon })
+                .addTo(map)
+                .bindPopup(`
+                    <div class="map-popup">
+                        <strong>${d.city}</strong>${d.isHQ ? ' <span class="hq-badge">HQ</span>' : ''}
+                        <br><small>${d.district}</small>
+                        <br><span>${d.distributors} active distributor${d.distributors > 1 ? 's' : ''}</span>
+                    </div>
+                `);
+            marker.cityName = d.city;
+            markers.push(marker);
+        });
+
+        buildCityList();
+
+        document.getElementById('citySearch').addEventListener('input', function() {
+            buildCityList(this.value);
+        });
+    </script>
+
+    <!-- ===== PRODUCT FILTER JS ===== -->
+    <script>
+        const productCards = document.querySelectorAll('#productsGrid .col-lg-3, #productsGrid .col-md-4, #productsGrid .col-sm-6');
+
+        function filterProducts() {
+            const query      = document.getElementById('productSearch').value.toLowerCase().trim();
+            const activeTag  = document.querySelector('.flavor-chip.active')?.dataset.tag || 'all';
+            let   visible    = 0;
+
+            productCards.forEach(col => {
+                const card = col.querySelector('.product-card');
+                if (!card) return;
+                const tag  = card.dataset.tag  || '';
+                const name = card.dataset.name || '';
+                const h5   = col.querySelector('h5')?.textContent.toLowerCase() || '';
+
+                const tagOK   = activeTag === 'all' || tag === activeTag;
+                const queryOK = !query || h5.includes(query) || name.includes(query);
+
+                if (tagOK && queryOK) {
+                    col.style.display = '';
+                    col.style.animation = 'fadeInCard 0.35s ease forwards';
+                    visible++;
+                } else {
+                    col.style.display = 'none';
+                }
+            });
+
+            document.getElementById('noProductsMsg').style.display = visible === 0 ? 'block' : 'none';
+        }
+
+        document.querySelectorAll('.flavor-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                document.querySelectorAll('.flavor-chip').forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+                filterProducts();
+            });
+        });
+
+        document.getElementById('productSearch').addEventListener('input', filterProducts);
+
+        document.getElementById('clearFilter')?.addEventListener('click', e => {
+            e.preventDefault();
+            document.getElementById('productSearch').value = '';
+            document.querySelectorAll('.flavor-chip').forEach(c => c.classList.remove('active'));
+            document.querySelector('.flavor-chip[data-tag="all"]').classList.add('active');
+            filterProducts();
+        });
+    </script>
+
+    <!-- ===== DEALER FORM JS ===== -->
+    <script>
+        document.getElementById('dealerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn    = document.getElementById('dealerSubmitBtn');
+            const status = document.getElementById('dealerStatus');
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Sending…';
+            status.textContent = '';
+
+            // Collect checked flavors
+            const checked = [...this.querySelectorAll('input[name="flavors"]:checked')].map(el => el.value);
+
+            const payload = {
+                business_name:  this.business_name.value,
+                contact_person: this.contact_person.value,
+                phone:          this.phone.value,
+                email:          this.email.value,
+                city:           this.city.value,
+                order_quantity: this.order_quantity.value,
+                flavors:        checked.join(', '),
+                message:        this.message.value
+            };
+
+            try {
+                const res  = await fetch('/dealer-enquiry', {
+                    method:  'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body:    JSON.stringify(payload)
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    status.textContent = '✓ ' + data.message;
+                    status.style.color = '#22c55e';
+                    this.reset();
+                } else {
+                    status.textContent = data.error || 'Failed. Please try again.';
+                    status.style.color = '#ef4444';
+                }
+            } catch {
+                status.textContent = 'Network error. Please try again.';
+                status.style.color = '#ef4444';
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="bi bi-send-fill me-2"></i>Submit Enquiry';
+            }
+        });
+    </script>
+
+    <!-- ===== ANNOUNCEMENT BAR JS ===== -->
+    <script>
+        const announcementBar = document.getElementById('announcementBar');
+        document.getElementById('announcementClose').addEventListener('click', () => {
+            announcementBar.style.maxHeight = '0';
+            announcementBar.style.padding   = '0';
+            announcementBar.style.opacity   = '0';
+            sessionStorage.setItem('annClosed', '1');
+        });
+        if (sessionStorage.getItem('annClosed')) {
+            announcementBar.style.display = 'none';
+        }
+    </script>
+
+    <!-- ===== ANIMATED COUNTERS JS ===== -->
+    <script>
+        function animateCount(el) {
+            const target   = parseInt(el.dataset.target);
+            const duration = 1800;
+            const step     = Math.max(1, Math.floor(target / (duration / 16)));
+            let   current  = 0;
+            const timer = setInterval(() => {
+                current = Math.min(current + step, target);
+                el.textContent = current;
+                if (current >= target) clearInterval(timer);
+            }, 16);
+        }
+
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.querySelectorAll('.about-stat-num').forEach(animateCount);
+                    counterObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.4 });
+
+        const statsGrid = document.querySelector('.about-stats-grid');
+        if (statsGrid) counterObserver.observe(statsGrid);
+    </script>
+
+    <!-- ===== PRODUCT LIGHTBOX JS ===== -->
+    <script>
+        const overlay       = document.getElementById('lightboxOverlay');
+        const lbImg         = document.getElementById('lightboxImg');
+        const lbCaption     = document.getElementById('lightboxCaption');
+        let   lbImages      = [];
+        let   lbIndex       = 0;
+
+        // Gather all product images
+        function buildImageList() {
+            lbImages = [...document.querySelectorAll('#productsGrid .product-card')].map(card => ({
+                src:     card.querySelector('img')?.src || '',
+                caption: card.querySelector('h5')?.textContent || ''
+            }));
+        }
+
+        function openLightbox(idx) {
+            buildImageList();
+            lbIndex = idx;
+            showLbImage();
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function showLbImage() {
+            lbImg.style.opacity = '0';
+            setTimeout(() => {
+                lbImg.src         = lbImages[lbIndex].src;
+                lbCaption.textContent = lbImages[lbIndex].caption + ' — VFC Agro Foods';
+                lbImg.style.opacity = '1';
+            }, 150);
+        }
+
+        // Attach click to product cards
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('#productsGrid .product-card').forEach((card, i) => {
+                card.style.cursor = 'zoom-in';
+                card.addEventListener('click', () => openLightbox(i));
+            });
+        });
+
+        document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+        document.getElementById('lightboxPrev').addEventListener('click', () => {
+            lbIndex = (lbIndex - 1 + lbImages.length) % lbImages.length;
+            showLbImage();
+        });
+        document.getElementById('lightboxNext').addEventListener('click', () => {
+            lbIndex = (lbIndex + 1) % lbImages.length;
+            showLbImage();
+        });
+        overlay.addEventListener('click', e => { if (e.target === overlay) closeLightbox(); });
+        document.addEventListener('keydown', e => {
+            if (!overlay.classList.contains('active')) return;
+            if (e.key === 'Escape')     closeLightbox();
+            if (e.key === 'ArrowLeft')  { lbIndex = (lbIndex - 1 + lbImages.length) % lbImages.length; showLbImage(); }
+            if (e.key === 'ArrowRight') { lbIndex = (lbIndex + 1) % lbImages.length; showLbImage(); }
+        });
+    </script>
+
+    <!-- ===== TESTIMONIALS CAROUSEL JS ===== -->
+    <script>
+        (function() {
+            const track     = document.getElementById('testimonialsTrack');
+            const dotsWrap  = document.getElementById('tDots');
+            const cards     = track ? [...track.children] : [];
+            const VISIBLE   = window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 3;
+            let   current   = 0;
+            let   autoTimer;
+
+            function totalSlides() {
+                return Math.ceil(cards.length / (window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 3));
+            }
+
+            function buildDots() {
+                dotsWrap.innerHTML = '';
+                for (let i = 0; i < totalSlides(); i++) {
+                    const d = document.createElement('button');
+                    d.className = 't-dot' + (i === current ? ' active' : '');
+                    d.addEventListener('click', () => goTo(i));
+                    dotsWrap.appendChild(d);
+                }
+            }
+
+            function goTo(idx) {
+                current = (idx + totalSlides()) % totalSlides();
+                const perSlide = window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 3;
+                const offset   = current * perSlide;
+                const cardW    = cards[0]?.offsetWidth + 24 || 0;
+                track.style.transform = `translateX(-${offset * cardW}px)`;
+                buildDots();
+            }
+
+            document.getElementById('tPrev')?.addEventListener('click', () => { goTo(current - 1); resetAuto(); });
+            document.getElementById('tNext')?.addEventListener('click', () => { goTo(current + 1); resetAuto(); });
+
+            function resetAuto() {
+                clearInterval(autoTimer);
+                autoTimer = setInterval(() => goTo(current + 1), 4500);
+            }
+
+            if (cards.length) { buildDots(); resetAuto(); }
+            window.addEventListener('resize', () => { goTo(0); });
+        })();
+    </script>
+
 </body>
 </html>

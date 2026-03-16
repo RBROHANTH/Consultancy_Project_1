@@ -1,0 +1,33 @@
+{
+  "name": "phase_2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RBROHANTH/Consultancy_Project_1.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/RBROHANTH/Consultancy_Project_1/issues"
+  },
+  "homepage": "https://github.com/RBROHANTH/Consultancy_Project_1#readme",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "mongoose": "^9.3.0",
+    "nodemailer": "^8.0.1",
+    "twilio": "^5.13.0"
+  }
+}
