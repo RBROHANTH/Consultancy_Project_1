@@ -234,6 +234,51 @@
             background:var(--accent); color:#fff; border-radius:20px;
             font-size:0.7rem; font-weight:700; padding:2px 8px; margin-left:8px;
         }
+
+        .btn-accept {
+            background: transparent;
+            border: 1px solid var(--success);
+            border-radius: 6px;
+            padding: 4px 10px;
+            cursor: pointer;
+            font-size: 0.72rem;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.2s;
+            color: var(--success);
+        }
+        .btn-accept:hover  { background: var(--success); color: #0b0f1a; }
+        .btn-accept:disabled { opacity: 0.4; cursor: not-allowed; }
+        .badge-accepted {
+            display: inline-block;
+            background: rgba(34,197,94,0.15);
+            color: #86efac;
+            font-size: 0.65rem;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            margin-left: 4px;
+            vertical-align: middle;
+        }
+        .badge-pending {
+            display: inline-block;
+            background: rgba(247,127,0,0.15);
+            color: #fdba74;
+            font-size: 0.65rem;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            margin-left: 4px;
+            vertical-align: middle;
+        }
+        .accept-toast {
+            position: fixed; bottom: 70px; right: 24px; z-index: 9999;
+            background: #14532d; border: 1px solid #22c55e;
+            border-radius: 12px; padding: 14px 20px; font-size: 0.85rem;
+            color: #86efac; display: none; animation: fadeInUp 0.3s ease;
+            max-width: 320px;
+        }
         .result-count { font-size:0.82rem; color:var(--muted); padding:12px 16px; border-top:1px solid var(--border); }
     </style>
 </head>
@@ -335,6 +380,7 @@
 </div>
 
 <!-- ── TOAST ─────────────────────────────────────────────────────────────────── -->
+<div class="accept-toast" id="acceptToast"></div>
 <div id="toast"></div>
 
 <script>
@@ -454,7 +500,12 @@
             const eJson     = JSON.stringify(e).replace(/"/g, '&quot;');
 
             return `<tr class="${isUnread ? 'row-unread' : ''}" onclick="openModalAndMark('${e.id}', ${eJson})">
-                <td><span class="badge badge-${e.type}">${e.type}</span>${isUnread ? '<span class="unread-dot"></span>' : ''}</td>
+                <td>
+                    <span class="badge badge-${e.type}">${e.type}</span>
+                    ${isUnread ? '<span class="unread-dot"></span>' : ''}
+                    ${isDealer && e.status === 'accepted' ? '<span class="badge-accepted">✓ accepted</span>' : ''}
+                    ${isDealer && e.status !== 'accepted' ? '<span class="badge-pending">pending</span>' : ''}
+                </td>
                 <td class="mono">${e.id || '—'}</td>
                 <td><div class="td-name">${name || '—'}</div><div class="td-email">${email || ''}</div></td>
                 <td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${subject}</td>
@@ -463,6 +514,7 @@
                 <td onclick="event.stopPropagation()">
                     <div class="td-actions">
                         ${isUnread ? `<button class="btn-read" onclick="markReadRow('${e.id}')">Read</button>` : ''}
+                        ${isDealer && e.status !== 'accepted' ? `<button class="btn-accept" onclick="acceptEnquiry('${e.id}', '${(e.business_name||'').replace(/'/g,"\\'")}', '${(e.city||'').replace(/'/g,"\\'")}', this)">Accept</button>` : ''}
                         <button class="btn-del" onclick="deleteRow('${e.id}')">Del</button>
                     </div>
                 </td>
@@ -599,6 +651,49 @@
     });
 
     // ── Toast ──────────────────────────────────────────────────────────────────
+
+    // ── Accept dealer enquiry → bumps distributor count ───────────────────────
+    async function acceptEnquiry(id, businessName, city, btn) {
+        if (!confirm(`Accept "${businessName}" from ${city}?\n\nThis will add 1 distributor to ${city} on the live map.`)) return;
+
+        btn.disabled    = true;
+        btn.textContent = '…';
+
+        try {
+            const res  = await fetch(`/admin/enquiries/${id}/accept`, {
+                method:  'PATCH',
+                headers: { 'x-admin-password': adminPassword }
+            });
+            const data = await res.json();
+
+            if (res.ok && data.success) {
+                // Update local enquiry status so UI reflects it immediately
+                const enquiry = allEnquiries.find(e => e.id === id);
+                if (enquiry) enquiry.status = 'accepted';
+
+                renderTable();
+                showAcceptToast(`✓ ${city} distributor count updated to ${data.newCount}`);
+                showToast(`✓ ${businessName} accepted as distributor`);
+            } else {
+                btn.disabled    = false;
+                btn.textContent = 'Accept';
+                showToast(data.error || 'Accept failed', true);
+            }
+        } catch {
+            btn.disabled    = false;
+            btn.textContent = 'Accept';
+            showToast('Network error during accept', true);
+        }
+    }
+
+    let acceptToastTimer;
+    function showAcceptToast(msg) {
+        const t = document.getElementById('acceptToast');
+        t.textContent = msg;
+        t.style.display = 'block';
+        clearTimeout(acceptToastTimer);
+        acceptToastTimer = setTimeout(() => t.style.display = 'none', 5000);
+    }
     let toastTimer;
     function showToast(msg, isError = false) {
         const t = document.getElementById('toast');

@@ -1,0 +1,12 @@
+# Environment variables — NEVER commit this
+.env
+
+# Dependencies — Render installs these itself
+node_modules/
+
+# Local data file (old JSON storage)
+data/
+
+# OS files
+.DS_Store
+Thumbs.db

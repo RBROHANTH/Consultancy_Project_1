@@ -25,7 +25,10 @@ const nodemailer = require('nodemailer');
 const cors       = require('cors');
 const path       = require('path');
 const mongoose   = require('mongoose');
-require('dotenv').config();
+// Load .env in development — on Render, env vars are set in the dashboard
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -51,6 +54,9 @@ const enquirySchema = new mongoose.Schema({
     from_email: String,
     subject:    String,
     message:    String,
+
+    // Status field
+    status: { type: String, enum: ['pending', 'accepted'], default: 'pending' },
 
     // Dealer form fields
     business_name:  String,
@@ -98,8 +104,70 @@ setInterval(() => {
     }
 }, 60 * 60 * 1000);
 
+
+// ─── Distributor Schema & Model ───────────────────────────────────────────────
+// Seeded once from hardcoded data; distributor counts are updated when
+// admin accepts a dealer enquiry.
+const distributorSchema = new mongoose.Schema({
+    city:         { type: String, required: true, unique: true },
+    lat:          Number,
+    lng:          Number,
+    district:     String,
+    isHQ:         { type: Boolean, default: false },
+    distributors: { type: Number, default: 0 }
+}, { timestamps: true });
+
+const Distributor = mongoose.model('Distributor', distributorSchema);
+
+// Seed default distributor data if collection is empty
+const SEED_DISTRIBUTORS = [
+    { city: 'Dindigul',     lat: 10.3673, lng: 77.9803, district: 'Dindigul',         isHQ: true,  distributors: 3 },
+    { city: 'Madurai',      lat: 9.9252,  lng: 78.1198, district: 'Madurai',           isHQ: false, distributors: 5 },
+    { city: 'Trichy',       lat: 10.7905, lng: 78.7047, district: 'Tiruchirappalli',   isHQ: false, distributors: 4 },
+    { city: 'Coimbatore',   lat: 11.0168, lng: 76.9558, district: 'Coimbatore',        isHQ: false, distributors: 6 },
+    { city: 'Salem',        lat: 11.6643, lng: 78.1460, district: 'Salem',             isHQ: false, distributors: 3 },
+    { city: 'Erode',        lat: 11.3410, lng: 77.7172, district: 'Erode',             isHQ: false, distributors: 2 },
+    { city: 'Namakkal',     lat: 11.2189, lng: 78.1674, district: 'Namakkal',          isHQ: false, distributors: 2 },
+    { city: 'Karur',        lat: 10.9601, lng: 78.0766, district: 'Karur',             isHQ: false, distributors: 2 },
+    { city: 'Palani',       lat: 10.4478, lng: 77.5216, district: 'Dindigul',          isHQ: false, distributors: 2 },
+    { city: 'Theni',        lat: 10.0104, lng: 77.4770, district: 'Theni',             isHQ: false, distributors: 2 },
+    { city: 'Virudhunagar', lat: 9.5852,  lng: 77.9571, district: 'Virudhunagar',      isHQ: false, distributors: 2 },
+    { city: 'Tirunelveli',  lat: 8.7139,  lng: 77.7567, district: 'Tirunelveli',       isHQ: false, distributors: 3 },
+    { city: 'Sivakasi',     lat: 9.4533,  lng: 77.7969, district: 'Virudhunagar',      isHQ: false, distributors: 1 },
+    { city: 'Pollachi',     lat: 10.6558, lng: 77.0076, district: 'Coimbatore',        isHQ: false, distributors: 1 },
+    { city: 'Ooty',         lat: 11.4102, lng: 76.6950, district: 'Nilgiris',          isHQ: false, distributors: 1 },
+    { city: 'Bangalore',    lat: 12.9716, lng: 77.5946, district: 'Karnataka',         isHQ: false, distributors: 2 },
+];
+
+async function seedDistributors() {
+    const count = await Distributor.countDocuments();
+    if (count === 0) {
+        await Distributor.insertMany(SEED_DISTRIBUTORS);
+        console.log('✓  Distributor data seeded to MongoDB');
+    }
+}
+
+mongoose.connection.once('open', seedDistributors);
+
 // ─── Middleware ───────────────────────────────────────────────────────────────
-app.use(cors());
+// Allow requests from your Render domain and localhost during dev
+const allowedOrigins = [
+    'http://localhost:3000',
+    'http://localhost:5000',
+    process.env.FRONTEND_URL,   // set this in Render env vars to your Render URL
+].filter(Boolean);
+
+app.use(cors({
+    origin: function (origin, callback) {
+        // Allow requests with no origin (mobile apps, curl, Postman)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.includes(origin)) return callback(null, true);
+        // Also allow any render.onrender.com subdomain
+        if (/\.onrender\.com$/.test(origin)) return callback(null, true);
+        callback(new Error('CORS: origin not allowed — ' + origin));
+    },
+    credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname)));
@@ -162,6 +230,10 @@ function requireAdmin(req, res, next) {
         return res.status(401).json({ error: 'Unauthorized.' });
     next();
 }
+
+
+// ─── Health check (Render pings this to keep service alive) ──────────────────
+app.get('/health', (req, res) => res.json({ status: 'ok', timestamp: new Date().toISOString() }));
 
 // ─── POST /send-email  (contact form) ────────────────────────────────────────
 app.post('/send-email', formRateLimiter, async (req, res) => {
@@ -303,6 +375,55 @@ app.delete('/admin/enquiries/all', requireAdmin, async (req, res) => {
         res.json({ success: true, message: 'All enquiries deleted.' });
     } catch (err) {
         res.status(500).json({ error: 'Clear all failed.' });
+    }
+});
+
+
+// ─── GET /api/distributors  (public — used by map on index.html) ──────────────
+app.get('/api/distributors', async (req, res) => {
+    try {
+        const distributors = await Distributor.find().sort({ city: 1 }).lean();
+        res.json(distributors);
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to fetch distributors.' });
+    }
+});
+
+// ─── PATCH /admin/enquiries/:id/accept  (admin accepts a dealer enquiry) ──────
+// Increments the distributor count for the enquiry's city.
+// If the city doesn't exist in the Distributor collection yet, it is created.
+app.patch('/admin/enquiries/:id/accept', requireAdmin, async (req, res) => {
+    try {
+        const enquiry = await Enquiry.findOne({ id: req.params.id });
+        if (!enquiry)
+            return res.status(404).json({ error: 'Enquiry not found.' });
+        if (enquiry.type !== 'dealer')
+            return res.status(400).json({ error: 'Only dealer enquiries can be accepted.' });
+        if (enquiry.status === 'accepted')
+            return res.status(400).json({ error: 'Enquiry already accepted.' });
+
+        const cityName = enquiry.city;
+
+        // Increment distributor count — upsert in case city is new
+        const updated = await Distributor.findOneAndUpdate(
+            { city: new RegExp(`^${cityName}$`, 'i') },  // case-insensitive match
+            { $inc: { distributors: 1 } },
+            { new: true, upsert: true,
+              setOnInsert: { city: cityName, lat: 0, lng: 0, district: cityName, isHQ: false } }
+        );
+
+        // Mark the enquiry as accepted so it can't be double-counted
+        await Enquiry.updateOne({ id: req.params.id }, { $set: { status: 'accepted' } });
+
+        res.json({
+            success: true,
+            message: `Distributor count for ${updated.city} is now ${updated.distributors}.`,
+            city:    updated.city,
+            newCount: updated.distributors
+        });
+    } catch (err) {
+        console.error('Accept error:', err.message);
+        res.status(500).json({ error: 'Failed to accept enquiry.' });
     }
 });
 

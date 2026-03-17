@@ -783,27 +783,21 @@
 
     <!-- ===== DISTRIBUTOR MAP SCRIPT ===== -->
     <script>
-        // Distributor data - cities VFC supplies to
-        const distributors = [
-            { city: 'Dindigul', lat: 10.3673, lng: 77.9803, district: 'Dindigul', isHQ: true,  distributors: 3 },
-            { city: 'Madurai',  lat: 9.9252,  lng: 78.1198, district: 'Madurai',   isHQ: false, distributors: 5 },
-            { city: 'Trichy',   lat: 10.7905, lng: 78.7047, district: 'Tiruchirappalli', isHQ: false, distributors: 4 },
-            { city: 'Coimbatore', lat: 11.0168, lng: 76.9558, district: 'Coimbatore', isHQ: false, distributors: 6 },
-            { city: 'Salem',    lat: 11.6643, lng: 78.1460, district: 'Salem',     isHQ: false, distributors: 3 },
-            { city: 'Erode',    lat: 11.3410, lng: 77.7172, district: 'Erode',     isHQ: false, distributors: 2 },
-            { city: 'Namakkal', lat: 11.2189, lng: 78.1674, district: 'Namakkal',  isHQ: false, distributors: 2 },
-            { city: 'Karur',    lat: 10.9601, lng: 78.0766, district: 'Karur',     isHQ: false, distributors: 2 },
-            { city: 'Palani',   lat: 10.4478, lng: 77.5216, district: 'Dindigul',  isHQ: false, distributors: 2 },
-            { city: 'Theni',    lat: 10.0104, lng: 77.4770, district: 'Theni',     isHQ: false, distributors: 2 },
-            { city: 'Virudhunagar', lat: 9.5852, lng: 77.9571, district: 'Virudhunagar', isHQ: false, distributors: 2 },
-            { city: 'Tirunelveli', lat: 8.7139, lng: 77.7567, district: 'Tirunelveli', isHQ: false, distributors: 3 },
-            { city: 'Sivakasi', lat: 9.4533,  lng: 77.7969, district: 'Virudhunagar', isHQ: false, distributors: 1 },
-            { city: 'Pollachi', lat: 10.6558, lng: 77.0076, district: 'Coimbatore', isHQ: false, distributors: 1 },
-            { city: 'Ooty',     lat: 11.4102, lng: 76.6950, district: 'Nilgiris',  isHQ: false, distributors: 1 },
-            { city: 'Bangalore', lat: 12.9716, lng: 77.5946, district: 'Karnataka', isHQ: false, distributors: 2 },
-        ];
+        // ── Fetch live distributor data from server ──────────────────────────────
+        let distributors = [];
 
-        // Animate counter
+        async function loadDistributors() {
+            try {
+                const res  = await fetch('/api/distributors');
+                distributors = await res.json();
+            } catch {
+                // Fallback to empty — map will show no pins if server is down
+                distributors = [];
+            }
+            initMap();
+        }
+
+        // ── Animate counter ────────────────────────────────────────────────────
         function animateCounter(el, target, duration = 1500) {
             let start = 0;
             const step = Math.ceil(target / (duration / 16));
@@ -814,33 +808,54 @@
             }, 16);
         }
 
-        // Count-up on section scroll into view
+        // ── Count-up on scroll ─────────────────────────────────────────────────
         const distSection = document.getElementById('distributors');
         const distObserver = new IntersectionObserver((entries) => {
             if (entries[0].isIntersecting) {
-                animateCounter(document.getElementById('statCities'), distributors.length);
-                animateCounter(document.getElementById('statDist'), distributors.reduce((a,d) => a + d.distributors, 0));
-                const districts = new Set(distributors.map(d => d.district)).size;
-                animateCounter(document.getElementById('statDistricts'), districts);
-                animateCounter(document.getElementById('statStates'), 2);
+                animateCounter(document.getElementById('statCities'),    distributors.length);
+                animateCounter(document.getElementById('statDist'),      distributors.reduce((a,d) => a + d.distributors, 0));
+                animateCounter(document.getElementById('statDistricts'), new Set(distributors.map(d => d.district)).size);
+                animateCounter(document.getElementById('statStates'),    2);
                 distObserver.disconnect();
             }
         }, { threshold: 0.2 });
         distSection && distObserver.observe(distSection);
 
-        // Initialize Leaflet map
-        const map = L.map('distributorMap', {
-            center: [10.5, 78.0],
-            zoom: 7,
-            zoomControl: true,
-            scrollWheelZoom: false
-        });
+        // ── Initialize Leaflet map ─────────────────────────────────────────────
+        let map, markers = [];
 
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-            attribution: '© OpenStreetMap © CARTO',
-            subdomains: 'abcd',
-            maxZoom: 19
-        }).addTo(map);
+        function initMap() {
+            if (map) {
+                // If already initialised, just refresh markers
+                markers.forEach(m => map.removeLayer(m));
+                markers = [];
+                buildCityList();
+                placeMarkers();
+                updateStats();
+                return;
+            }
+
+            map = L.map('distributorMap', {
+                center: [10.5, 78.0], zoom: 7,
+                zoomControl: true, scrollWheelZoom: false
+            });
+
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                attribution: '© OpenStreetMap © CARTO',
+                subdomains: 'abcd', maxZoom: 19
+            }).addTo(map);
+
+            buildCityList();
+            placeMarkers();
+        }
+
+        function updateStats() {
+            const totalDist = distributors.reduce((a, d) => a + d.distributors, 0);
+            document.getElementById('statCities').textContent    = distributors.length + '+';
+            document.getElementById('statDist').textContent      = totalDist + '+';
+            document.getElementById('statDistricts').textContent = new Set(distributors.map(d => d.district)).size + '+';
+            document.getElementById('statStates').textContent    = '2+';
+        }
 
         // Custom icons
         const hqIcon = L.divIcon({
@@ -854,9 +869,24 @@
             iconSize: [14, 14], iconAnchor: [7, 7]
         });
 
-        let markers = [];
+        function placeMarkers() {
+            distributors.forEach(d => {
+                if (!d.lat || !d.lng) return;
+                const marker = L.marker([d.lat, d.lng], { icon: d.isHQ ? hqIcon : cityIcon })
+                    .addTo(map)
+                    .bindPopup(`
+                        <div class="map-popup">
+                            <strong>${d.city}</strong>${d.isHQ ? ' <span class="hq-badge">HQ</span>' : ''}
+                            <br><small>${d.district}</small>
+                            <br><span>${d.distributors} active distributor${d.distributors !== 1 ? 's' : ''}</span>
+                        </div>
+                    `);
+                marker.cityName = d.city;
+                markers.push(marker);
+            });
+        }
 
-        // Build city list sidebar
+        // ── City list sidebar ──────────────────────────────────────────────────
         function buildCityList(filter = '') {
             const list = document.getElementById('cityList');
             list.innerHTML = '';
@@ -869,11 +899,10 @@
                 item.className = 'city-list-item' + (d.isHQ ? ' hq-item' : '');
                 item.innerHTML = `
                     <div class="city-name">${d.isHQ ? '🏭 ' : '📍 '}${d.city}</div>
-                    <div class="city-meta">${d.district} &bull; ${d.distributors} distributor${d.distributors > 1 ? 's' : ''}</div>
+                    <div class="city-meta">${d.district} &bull; <span class="dist-count" data-city="${d.city}">${d.distributors}</span> distributor${d.distributors !== 1 ? 's' : ''}</div>
                 `;
                 item.addEventListener('click', () => {
                     map.setView([d.lat, d.lng], 10, { animate: true });
-                    // find & open popup
                     markers.forEach(m => { if (m.cityName === d.city) m.openPopup(); });
                 });
                 list.appendChild(item);
@@ -883,26 +912,12 @@
             }
         }
 
-        // Place markers
-        distributors.forEach(d => {
-            const marker = L.marker([d.lat, d.lng], { icon: d.isHQ ? hqIcon : cityIcon })
-                .addTo(map)
-                .bindPopup(`
-                    <div class="map-popup">
-                        <strong>${d.city}</strong>${d.isHQ ? ' <span class="hq-badge">HQ</span>' : ''}
-                        <br><small>${d.district}</small>
-                        <br><span>${d.distributors} active distributor${d.distributors > 1 ? 's' : ''}</span>
-                    </div>
-                `);
-            marker.cityName = d.city;
-            markers.push(marker);
-        });
-
-        buildCityList();
-
         document.getElementById('citySearch').addEventListener('input', function() {
             buildCityList(this.value);
         });
+
+        // ── Boot ───────────────────────────────────────────────────────────────
+        loadDistributors();
     </script>
 
     <!-- ===== PRODUCT FILTER JS ===== -->
