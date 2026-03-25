@@ -73,6 +73,21 @@ const enquirySchema = new mongoose.Schema({
 
 const Enquiry = mongoose.model('Enquiry', enquirySchema);
 
+// ─── Inventory Schema & Model ───────────────────────────────────────────────
+// Tracks inbound raw materials and outbound finished product dispatches.
+const inventoryTxnSchema = new mongoose.Schema({
+    txId:       { type: String, required: true, unique: true },
+    direction:  { type: String, enum: ['incoming', 'outgoing'], required: true },
+    category:   { type: String, enum: ['raw', 'product'], required: true },
+    item:       { type: String, required: true },
+    quantity:   { type: Number, required: true, min: 0.01 },
+    unit:       { type: String, default: 'units' },
+    note:       { type: String, default: '' },
+    createdBy:  { type: String, default: 'admin' }
+}, { timestamps: true });
+
+const InventoryTransaction = mongoose.model('InventoryTransaction', inventoryTxnSchema);
+
 // ─── In-memory rate limiter ───────────────────────────────────────────────────
 const RATE_WINDOW_MS = 15 * 60 * 1000;
 const RATE_LIMIT     = 5;
@@ -114,29 +129,30 @@ const distributorSchema = new mongoose.Schema({
     lng:          Number,
     district:     String,
     isHQ:         { type: Boolean, default: false },
-    distributors: { type: Number, default: 0 }
+    distributors: { type: Number, default: 0 },
+    threshold:    { type: Number, default: 10 }  // max distributors allowed per city
 }, { timestamps: true });
 
 const Distributor = mongoose.model('Distributor', distributorSchema);
 
 // Seed default distributor data if collection is empty
 const SEED_DISTRIBUTORS = [
-    { city: 'Dindigul',     lat: 10.3673, lng: 77.9803, district: 'Dindigul',         isHQ: true,  distributors: 3 },
-    { city: 'Madurai',      lat: 9.9252,  lng: 78.1198, district: 'Madurai',           isHQ: false, distributors: 5 },
-    { city: 'Trichy',       lat: 10.7905, lng: 78.7047, district: 'Tiruchirappalli',   isHQ: false, distributors: 4 },
-    { city: 'Coimbatore',   lat: 11.0168, lng: 76.9558, district: 'Coimbatore',        isHQ: false, distributors: 6 },
-    { city: 'Salem',        lat: 11.6643, lng: 78.1460, district: 'Salem',             isHQ: false, distributors: 3 },
-    { city: 'Erode',        lat: 11.3410, lng: 77.7172, district: 'Erode',             isHQ: false, distributors: 2 },
-    { city: 'Namakkal',     lat: 11.2189, lng: 78.1674, district: 'Namakkal',          isHQ: false, distributors: 2 },
-    { city: 'Karur',        lat: 10.9601, lng: 78.0766, district: 'Karur',             isHQ: false, distributors: 2 },
-    { city: 'Palani',       lat: 10.4478, lng: 77.5216, district: 'Dindigul',          isHQ: false, distributors: 2 },
-    { city: 'Theni',        lat: 10.0104, lng: 77.4770, district: 'Theni',             isHQ: false, distributors: 2 },
-    { city: 'Virudhunagar', lat: 9.5852,  lng: 77.9571, district: 'Virudhunagar',      isHQ: false, distributors: 2 },
-    { city: 'Tirunelveli',  lat: 8.7139,  lng: 77.7567, district: 'Tirunelveli',       isHQ: false, distributors: 3 },
-    { city: 'Sivakasi',     lat: 9.4533,  lng: 77.7969, district: 'Virudhunagar',      isHQ: false, distributors: 1 },
-    { city: 'Pollachi',     lat: 10.6558, lng: 77.0076, district: 'Coimbatore',        isHQ: false, distributors: 1 },
-    { city: 'Ooty',         lat: 11.4102, lng: 76.6950, district: 'Nilgiris',          isHQ: false, distributors: 1 },
-    { city: 'Bangalore',    lat: 12.9716, lng: 77.5946, district: 'Karnataka',         isHQ: false, distributors: 2 },
+    { city: 'Dindigul',     lat: 10.3673, lng: 77.9803, district: 'Dindigul',         isHQ: true,  distributors: 3, threshold: 10 },
+    { city: 'Madurai',      lat: 9.9252,  lng: 78.1198, district: 'Madurai',           isHQ: false, distributors: 5, threshold: 10 },
+    { city: 'Trichy',       lat: 10.7905, lng: 78.7047, district: 'Tiruchirappalli',   isHQ: false, distributors: 4, threshold: 10 },
+    { city: 'Coimbatore',   lat: 11.0168, lng: 76.9558, district: 'Coimbatore',        isHQ: false, distributors: 6, threshold: 10 },
+    { city: 'Salem',        lat: 11.6643, lng: 78.1460, district: 'Salem',             isHQ: false, distributors: 3, threshold: 10 },
+    { city: 'Erode',        lat: 11.3410, lng: 77.7172, district: 'Erode',             isHQ: false, distributors: 2, threshold: 10 },
+    { city: 'Namakkal',     lat: 11.2189, lng: 78.1674, district: 'Namakkal',          isHQ: false, distributors: 2, threshold: 10 },
+    { city: 'Karur',        lat: 10.9601, lng: 78.0766, district: 'Karur',             isHQ: false, distributors: 2, threshold: 10 },
+    { city: 'Palani',       lat: 10.4478, lng: 77.5216, district: 'Dindigul',          isHQ: false, distributors: 2, threshold: 10 },
+    { city: 'Theni',        lat: 10.0104, lng: 77.4770, district: 'Theni',             isHQ: false, distributors: 2, threshold: 10 },
+    { city: 'Virudhunagar', lat: 9.5852,  lng: 77.9571, district: 'Virudhunagar',      isHQ: false, distributors: 2, threshold: 10 },
+    { city: 'Tirunelveli',  lat: 8.7139,  lng: 77.7567, district: 'Tirunelveli',       isHQ: false, distributors: 3, threshold: 10 },
+    { city: 'Sivakasi',     lat: 9.4533,  lng: 77.7969, district: 'Virudhunagar',      isHQ: false, distributors: 1, threshold: 10 },
+    { city: 'Pollachi',     lat: 10.6558, lng: 77.0076, district: 'Coimbatore',        isHQ: false, distributors: 1, threshold: 10 },
+    { city: 'Ooty',         lat: 11.4102, lng: 76.6950, district: 'Nilgiris',          isHQ: false, distributors: 1, threshold: 10 },
+    { city: 'Bangalore',    lat: 12.9716, lng: 77.5946, district: 'Karnataka',         isHQ: false, distributors: 2, threshold: 10 },
 ];
 
 async function seedDistributors() {
@@ -229,6 +245,48 @@ function requireAdmin(req, res, next) {
     if (provided !== process.env.ADMIN_PASSWORD)
         return res.status(401).json({ error: 'Unauthorized.' });
     next();
+}
+
+function toPositiveNumber(value) {
+    const n = Number(value);
+    return Number.isFinite(n) && n > 0 ? n : NaN;
+}
+
+async function buildInventorySummary() {
+    const txns = await InventoryTransaction.find()
+        .sort({ createdAt: -1 })
+        .limit(500)
+        .lean();
+
+    const rawIncomingTotals = new Map();
+    const productOutgoingTotals = new Map();
+
+    txns.forEach(txn => {
+        const key = `${txn.item}__${txn.unit}`;
+
+        if (txn.direction === 'incoming' && txn.category === 'raw') {
+            rawIncomingTotals.set(key, (rawIncomingTotals.get(key) || 0) + txn.quantity);
+        }
+        if (txn.direction === 'outgoing' && txn.category === 'product') {
+            productOutgoingTotals.set(key, (productOutgoingTotals.get(key) || 0) + txn.quantity);
+        }
+    });
+
+    const mapToArray = map => [...map.entries()]
+        .map(([k, quantity]) => {
+            const [item, unit] = k.split('__');
+            return { item, unit, quantity: Number(quantity.toFixed(2)) };
+        })
+        .sort((a, b) => a.item.localeCompare(b.item));
+
+    return {
+        rawIncoming: mapToArray(rawIncomingTotals),
+        productOutgoing: mapToArray(productOutgoingTotals),
+        recentTransactions: txns.slice(0, 20).map(t => ({
+            ...t,
+            timestamp: t.createdAt?.toISOString() || ''
+        }))
+    };
 }
 
 
@@ -392,6 +450,7 @@ app.get('/api/distributors', async (req, res) => {
 // ─── PATCH /admin/enquiries/:id/accept  (admin accepts a dealer enquiry) ──────
 // Increments the distributor count for the enquiry's city.
 // If the city doesn't exist in the Distributor collection yet, it is created.
+// Validates against the city's threshold before accepting.
 app.patch('/admin/enquiries/:id/accept', requireAdmin, async (req, res) => {
     try {
         const enquiry = await Enquiry.findOne({ id: req.params.id });
@@ -404,26 +463,184 @@ app.patch('/admin/enquiries/:id/accept', requireAdmin, async (req, res) => {
 
         const cityName = enquiry.city;
 
-        // Increment distributor count — upsert in case city is new
+        // Find or create the city in distributors
+        let cityDistributor = await Distributor.findOne({ city: new RegExp(`^${cityName}$`, 'i') });
+        
+        if (!cityDistributor) {
+            // Create new city with default threshold
+            cityDistributor = await Distributor.create({
+                city: cityName,
+                lat: 0,
+                lng: 0,
+                district: cityName,
+                isHQ: false,
+                distributors: 0,
+                threshold: 10
+            });
+        }
+
+        // Check if adding this distributor would exceed threshold
+        const newCount = cityDistributor.distributors + 1;
+        const threshold = cityDistributor.threshold || 10;
+        
+        if (newCount > threshold) {
+            return res.status(400).json({
+                error: `Cannot accept: ${cityName} has reached its distributor limit. Current: ${cityDistributor.distributors}, Threshold: ${threshold}`
+            });
+        }
+
+        // Increment distributor count
         const updated = await Distributor.findOneAndUpdate(
-            { city: new RegExp(`^${cityName}$`, 'i') },  // case-insensitive match
+            { city: new RegExp(`^${cityName}$`, 'i') },
             { $inc: { distributors: 1 } },
-            { new: true, upsert: true,
-              setOnInsert: { city: cityName, lat: 0, lng: 0, district: cityName, isHQ: false } }
+            { returnDocument: 'after' }
         );
 
-        // Mark the enquiry as accepted so it can't be double-counted
+        // Mark the enquiry as accepted
         await Enquiry.updateOne({ id: req.params.id }, { $set: { status: 'accepted' } });
 
         res.json({
             success: true,
             message: `Distributor count for ${updated.city} is now ${updated.distributors}.`,
             city:    updated.city,
-            newCount: updated.distributors
+            newCount: updated.distributors,
+            threshold: updated.threshold
         });
     } catch (err) {
         console.error('Accept error:', err.message);
         res.status(500).json({ error: 'Failed to accept enquiry.' });
+    }
+});
+
+// ─── GET /admin/city-thresholds ────────────────────────────────────────────────
+// Fetch all cities with their current distributor counts and thresholds
+app.get('/admin/city-thresholds', requireAdmin, async (req, res) => {
+    try {
+        const cities = await Distributor.find().sort({ city: 1 }).lean();
+        res.json({
+            success: true,
+            cities: cities.map(c => ({
+                city: c.city,
+                distributors: c.distributors,
+                threshold: c.threshold || 10,
+                district: c.district,
+                isHQ: c.isHQ
+            }))
+        });
+    } catch (err) {
+        console.error('Fetch thresholds error:', err.message);
+        res.status(500).json({ error: 'Failed to fetch thresholds.' });
+    }
+});
+
+// ─── PATCH /admin/city-thresholds/:city ─────────────────────────────────────────
+// Update the threshold for a specific city
+app.patch('/admin/city-thresholds/:city', requireAdmin, async (req, res) => {
+    try {
+        const cityName = req.params.city;
+        const { threshold } = req.body;
+
+        if (!threshold || threshold < 1 || !Number.isInteger(threshold)) {
+            return res.status(400).json({ error: 'Threshold must be a positive integer.' });
+        }
+
+        const updated = await Distributor.findOneAndUpdate(
+            { city: new RegExp(`^${cityName}$`, 'i') },
+            { threshold: threshold },
+            { returnDocument: 'after' }
+        );
+
+        if (!updated) {
+            return res.status(404).json({ error: `City "${cityName}" not found.` });
+        }
+
+        res.json({
+            success: true,
+            message: `Threshold for ${updated.city} updated to ${updated.threshold}.`,
+            city: updated.city,
+            threshold: updated.threshold,
+            distributors: updated.distributors
+        });
+    } catch (err) {
+        console.error('Update threshold error:', err.message);
+        res.status(500).json({ error: 'Failed to update threshold.' });
+    }
+});
+
+// ─── Inventory APIs (admin) ─────────────────────────────────────────────────
+app.get('/admin/inventory/summary', requireAdmin, async (req, res) => {
+    try {
+        const summary = await buildInventorySummary();
+        res.json({ success: true, ...summary });
+    } catch (err) {
+        console.error('Inventory summary error:', err.message);
+        res.status(500).json({ error: 'Failed to fetch inventory summary.' });
+    }
+});
+
+app.post('/admin/inventory/incoming', requireAdmin, async (req, res) => {
+    try {
+        const item = sanitize(req.body.item);
+        const unit = sanitize(req.body.unit || 'units');
+        const note = sanitize(req.body.note || '');
+        const quantity = toPositiveNumber(req.body.quantity);
+
+        if (!item) return res.status(400).json({ error: 'Item is required.' });
+        if (!quantity) return res.status(400).json({ error: 'Quantity must be a positive number.' });
+
+        const created = await InventoryTransaction.create({
+            txId: `IN-${Date.now()}`,
+            direction: 'incoming',
+            category: 'raw',
+            item,
+            quantity,
+            unit,
+            note
+        });
+
+        res.json({
+            success: true,
+            transaction: {
+                ...created.toObject(),
+                timestamp: created.createdAt?.toISOString() || ''
+            }
+        });
+    } catch (err) {
+        console.error('Inventory incoming error:', err.message);
+        res.status(500).json({ error: 'Failed to add incoming material.' });
+    }
+});
+
+app.post('/admin/inventory/outgoing', requireAdmin, async (req, res) => {
+    try {
+        const item = sanitize(req.body.item);
+        const unit = sanitize(req.body.unit || 'bottles');
+        const note = sanitize(req.body.note || '');
+        const quantity = toPositiveNumber(req.body.quantity);
+
+        if (!item) return res.status(400).json({ error: 'Item is required.' });
+        if (!quantity) return res.status(400).json({ error: 'Quantity must be a positive number.' });
+
+        const created = await InventoryTransaction.create({
+            txId: `OUT-${Date.now()}`,
+            direction: 'outgoing',
+            category: 'product',
+            item,
+            quantity,
+            unit,
+            note
+        });
+
+        res.json({
+            success: true,
+            transaction: {
+                ...created.toObject(),
+                timestamp: created.createdAt?.toISOString() || ''
+            }
+        });
+    } catch (err) {
+        console.error('Inventory outgoing error:', err.message);
+        res.status(500).json({ error: 'Failed to add outgoing shipment.' });
     }
 });
 

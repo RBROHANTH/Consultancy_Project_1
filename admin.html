@@ -280,6 +280,152 @@
             max-width: 320px;
         }
         .result-count { font-size:0.82rem; color:var(--muted); padding:12px 16px; border-top:1px solid var(--border); }
+
+        /* ── Threshold Management Modal ── */
+        .threshold-modal { max-width: 700px; max-height: 80vh; }
+        .threshold-list { max-height: 500px; overflow-y: auto; margin: 16px 0; }
+        .threshold-item {
+            display: grid; grid-template-columns: 2fr 1fr 1fr 80px; gap: 12px;
+            align-items: center; padding: 12px; border: 1px solid var(--border);
+            border-radius: 8px; margin-bottom: 8px; background: #0d1421;
+        }
+        .threshold-city { font-weight: 600; }
+        .threshold-current, .threshold-thresh, .threshold-input-wrap {
+            font-size: 0.82rem; display: flex; align-items: center; justify-content: center;
+        }
+        .threshold-current { color: var(--accent2); }
+        .threshold-thresh { color: var(--accent); }
+        .threshold-input-wrap input {
+            width: 60px; padding: 4px 8px; background: #0d1421;
+            border: 1px solid var(--border); border-radius: 4px;
+            color: var(--text); font-size: 0.82rem; text-align: center;
+        }
+        .threshold-actions { display: flex; gap: 8px; margin-top: 16px; }
+        .threshold-save-btn {
+            padding: 9px 18px; border-radius: 10px; border: 1px solid var(--success);
+            background: transparent; color: var(--success); cursor: pointer;
+            font-size: 0.82rem; font-family: 'DM Sans', sans-serif; transition: all 0.2s;
+        }
+        .threshold-save-btn:hover { background: var(--success); color: #0b0f1a; }
+        .threshold-close-btn {
+            padding: 9px 18px; border-radius: 10px; border: 1px solid var(--border);
+            background: transparent; color: var(--muted); cursor: pointer;
+            font-size: 0.82rem; font-family: 'DM Sans', sans-serif; transition: all 0.2s;
+        }
+        .threshold-close-btn:hover { border-color: var(--muted); color: var(--text); }
+        .threshold-status { font-size: 0.78rem; color: var(--muted); margin-top: 12px; text-align: center; }
+
+        /* ── Inventory Management ── */
+        .inventory-section {
+            margin-top: 26px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+        }
+        .inventory-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+        }
+        .inventory-head h3 { font-size: 1.05rem; }
+        .inventory-muted { color: var(--muted); font-size: 0.8rem; }
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+        .inventory-card {
+            background: #0d1421;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px;
+        }
+        .inventory-card h4 {
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+        .inv-form { display: grid; grid-template-columns: 1fr 120px 120px; gap: 8px; margin-bottom: 8px; }
+        .inv-note { grid-column: 1 / -1; }
+        .inv-input {
+            width: 100%;
+            background: #0b0f1a;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            padding: 9px 10px;
+            font-size: 0.82rem;
+            font-family: 'DM Sans', sans-serif;
+            outline: none;
+        }
+        .inv-input:focus { border-color: var(--accent); }
+        .inv-submit {
+            width: 100%;
+            border: 1px solid var(--accent);
+            background: transparent;
+            color: var(--accent);
+            border-radius: 8px;
+            padding: 8px 10px;
+            font-size: 0.8rem;
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .inv-submit:hover { background: var(--accent); color: #0b0f1a; }
+        .inv-submit.outgoing {
+            border-color: var(--accent2);
+            color: var(--accent2);
+        }
+        .inv-submit.outgoing:hover { background: var(--accent2); color: #0b0f1a; }
+        .inventory-summary-list { display: grid; gap: 6px; margin-top: 10px; }
+        .inventory-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            font-size: 0.8rem;
+            border-bottom: 1px dashed rgba(100,116,139,0.25);
+            padding-bottom: 5px;
+        }
+        .inventory-row:last-child { border-bottom: none; }
+        .inventory-row strong { color: #fff; }
+        .inventory-logs {
+            margin-top: 14px;
+            background: #0d1421;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .inventory-logs table { width: 100%; border-collapse: collapse; }
+        .inventory-logs th, .inventory-logs td {
+            padding: 9px 10px;
+            font-size: 0.77rem;
+            text-align: left;
+            border-top: 1px solid var(--border);
+            vertical-align: top;
+        }
+        .inventory-logs th { border-top: none; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+        .pill {
+            display: inline-block;
+            font-size: 0.67rem;
+            border-radius: 16px;
+            padding: 2px 8px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+        }
+        .pill-in { background: rgba(34,197,94,0.15); color: #86efac; }
+        .pill-out { background: rgba(76,201,240,0.16); color: #7dd3fc; }
+        @media(max-width: 1000px) {
+            .inventory-grid { grid-template-columns: 1fr; }
+        }
+        @media(max-width: 700px) {
+            .inv-form { grid-template-columns: 1fr 1fr; }
+            .inv-form .inv-item { grid-column: 1 / -1; }
+            .inv-form .inv-note { grid-column: 1 / -1; }
+        }
     </style>
 </head>
 <body>
@@ -347,6 +493,7 @@
         <div class="action-bar">
             <button class="csv-btn" id="csvBtn"><i class="bi bi-download"></i> Export CSV</button>
             <span id="unreadBadge"></span>
+            <button class="csv-btn" id="thresholdBtn" style="border-color:var(--accent2);color:var(--accent2);"><i class="bi bi-sliders"></i> Manage Thresholds</button>
             <button class="del-all-btn" id="delAllBtn"><i class="bi bi-trash3"></i> Clear All</button>
         </div>
 
@@ -368,6 +515,76 @@
             </table>
             <div class="result-count" id="resultCount"></div>
         </div>
+
+        <section class="inventory-section">
+            <div class="inventory-head">
+                <div>
+                    <h3><i class="bi bi-box-seam"></i> Inventory Management</h3>
+                    <div class="inventory-muted">Register incoming raw materials and outgoing soft drink bottle exports.</div>
+                </div>
+                <div class="inventory-muted" id="inventoryStamp">Updated: --</div>
+            </div>
+
+            <div class="inventory-grid">
+                <div class="inventory-card">
+                    <h4>Incoming Raw Materials</h4>
+                    <form id="incomingForm" class="inv-form">
+                        <input class="inv-input inv-item" id="incomingItem" list="rawMaterialList" placeholder="Raw material (CO2 Cylinders, Bottles, Purified Water)" required>
+                        <input class="inv-input" id="incomingQty" type="number" min="0.01" step="0.01" placeholder="Qty" required>
+                        <input class="inv-input" id="incomingUnit" placeholder="Unit" value="units" required>
+                        <input class="inv-input inv-note" id="incomingNote" placeholder="Notes (optional)">
+                    </form>
+                    <button class="inv-submit" id="incomingSubmit">+ Add Incoming Material</button>
+
+                    <div class="inventory-summary-list" id="rawSummaryList"></div>
+                </div>
+
+                <div class="inventory-card">
+                    <h4>Outgoing Soft Drink Exports</h4>
+                    <form id="outgoingForm" class="inv-form">
+                        <input class="inv-input inv-item" id="outgoingItem" list="productList" placeholder="Product (e.g., Lemon 500ml Bottle)" required>
+                        <input class="inv-input" id="outgoingQty" type="number" min="0.01" step="0.01" placeholder="Qty" required>
+                        <input class="inv-input" id="outgoingUnit" placeholder="Unit" value="bottles" required>
+                        <input class="inv-input inv-note" id="outgoingNote" placeholder="Dispatch notes (optional)">
+                    </form>
+                    <button class="inv-submit outgoing" id="outgoingSubmit">+ Add Outgoing Export</button>
+
+                    <div class="inventory-summary-list" id="productSummaryList"></div>
+                </div>
+            </div>
+
+            <div class="inventory-logs" style="margin-top:16px;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Direction</th>
+                            <th>Transaction ID</th>
+                            <th>Item</th>
+                            <th>Quantity</th>
+                            <th>When</th>
+                            <th>Note</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventoryLogBody"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <datalist id="rawMaterialList">
+            <option value="CO2 Cylinders"></option>
+            <option value="Empty Bottles"></option>
+            <option value="Purified Water"></option>
+            <option value="Sugar Syrup"></option>
+            <option value="Flavor Concentrate"></option>
+        </datalist>
+
+        <datalist id="productList">
+            <option value="Lemon Soft Drink Bottle"></option>
+            <option value="Cola Soft Drink Bottle"></option>
+            <option value="Orange Soft Drink Bottle"></option>
+            <option value="Jeera Soft Drink Bottle"></option>
+            <option value="Blueberry Soft Drink Bottle"></option>
+        </datalist>
     </div>
 </div>
 
@@ -379,6 +596,21 @@
     </div>
 </div>
 
+<!-- ── THRESHOLD MANAGEMENT MODAL ─────────────────────────────────────────────── -->
+<div class="modal-bg" id="thresholdBg">
+    <div class="modal threshold-modal" id="thresholdBox">
+        <button class="modal-close" id="thresholdClose"><i class="bi bi-x"></i></button>
+        <h3>📊 Manage City Distributor Thresholds</h3>
+        <p style="font-size:0.85rem;color:var(--muted);margin-bottom:16px;">Set the maximum number of distributors allowed per city.</p>
+        <div class="threshold-list" id="thresholdList"></div>
+        <div class="threshold-status" id="thresholdStatus"></div>
+        <div class="threshold-actions">
+            <button class="threshold-save-btn" id="thresholdSaveAll">💾 Save All Changes</button>
+            <button class="threshold-close-btn" id="thresholdCloseBtn">Close</button>
+        </div>
+    </div>
+</div>
+
 <!-- ── TOAST ─────────────────────────────────────────────────────────────────── -->
 <div class="accept-toast" id="acceptToast"></div>
 <div id="toast"></div>
@@ -387,6 +619,7 @@
     let adminPassword = '';
     let allEnquiries  = [];
     let activeFilter  = 'all';
+    let inventorySummary = { rawIncoming: [], productOutgoing: [], recentTransactions: [] };
 
     // ── Login ──────────────────────────────────────────────────────────────────
     async function tryLogin() {
@@ -401,7 +634,7 @@
             adminPassword = pwd;
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('dashboard').style.display   = 'block';
-            loadEnquiries();
+            loadDashboardData();
             startClock();
         } else {
             document.getElementById('loginError').style.display = 'block';
@@ -423,7 +656,11 @@
     }
 
     // ── Load data ──────────────────────────────────────────────────────────────
-    async function loadEnquiries() {
+    async function loadDashboardData() {
+        await Promise.all([loadEnquiries(false), loadInventorySummary(false)]);
+    }
+
+    async function loadEnquiries(showMsg = true) {
         const btn = document.getElementById('refreshBtn');
         btn.classList.add('spinning');
 
@@ -433,11 +670,31 @@
             allEnquiries = data.enquiries || [];
             updateStats();
             renderTable();
-            showToast(`✓ Loaded ${allEnquiries.length} enquiries`);
+            if (showMsg) showToast(`✓ Loaded ${allEnquiries.length} enquiries`);
         } catch {
             showToast('✗ Failed to load enquiries', true);
         } finally {
             btn.classList.remove('spinning');
+        }
+    }
+
+    async function loadInventorySummary(showMsg = true) {
+        try {
+            const res = await fetch('/admin/inventory/summary', {
+                headers: { 'x-admin-password': adminPassword }
+            });
+            const data = await res.json();
+            if (!res.ok || !data.success) throw new Error(data.error || 'Failed to fetch inventory');
+
+            inventorySummary = {
+                rawIncoming: data.rawIncoming || [],
+                productOutgoing: data.productOutgoing || [],
+                recentTransactions: data.recentTransactions || []
+            };
+            renderInventory();
+            if (showMsg) showToast('✓ Inventory summary refreshed');
+        } catch (err) {
+            showToast(err.message || 'Inventory load failed', true);
         }
     }
 
@@ -609,7 +866,7 @@
         });
     });
     document.getElementById('searchInput').addEventListener('input', renderTable);
-    document.getElementById('refreshBtn').addEventListener('click', loadEnquiries);
+    document.getElementById('refreshBtn').addEventListener('click', loadDashboardData);
 
     // ── Modal ──────────────────────────────────────────────────────────────────
     function openModal(eRaw) {
@@ -654,7 +911,23 @@
 
     // ── Accept dealer enquiry → bumps distributor count ───────────────────────
     async function acceptEnquiry(id, businessName, city, btn) {
-        if (!confirm(`Accept "${businessName}" from ${city}?\n\nThis will add 1 distributor to ${city} on the live map.`)) return;
+        // First fetch current city info to show threshold warning
+        try {
+            const threshRes = await fetch('/admin/city-thresholds', {
+                headers: { 'x-admin-password': adminPassword }
+            });
+            const threshData = await threshRes.json();
+            const cityInfo = threshData.cities?.find(c => c.city === city);
+            const currentCount = cityInfo?.distributors || 0;
+            const threshold = cityInfo?.threshold || 10;
+            const warningMsg = currentCount >= threshold 
+                ? `⚠️  WARNING: ${city} has reached its threshold (${currentCount}/${threshold})!`
+                : `${city}: ${currentCount}/${threshold} distributors`;
+            
+            if (!confirm(`Accept "${businessName}" from ${city}?\n\n${warningMsg}\nThis will add 1 distributor.`)) return;
+        } catch (err) {
+            if (!confirm(`Accept "${businessName}" from ${city}?\n\nThis will add 1 distributor to ${city}.`)) return;
+        }
 
         btn.disabled    = true;
         btn.textContent = '…';
@@ -672,7 +945,7 @@
                 if (enquiry) enquiry.status = 'accepted';
 
                 renderTable();
-                showAcceptToast(`✓ ${city} distributor count updated to ${data.newCount}`);
+                showAcceptToast(`✓ ${city} distributor count updated to ${data.newCount}/${data.threshold}`);
                 showToast(`✓ ${businessName} accepted as distributor`);
             } else {
                 btn.disabled    = false;
@@ -703,6 +976,200 @@
         clearTimeout(toastTimer);
         toastTimer = setTimeout(() => t.style.display = 'none', 3000);
     }
+
+    // ── Threshold Management ───────────────────────────────────────────────────────
+    let thresholdChanges = {};  // Track changes: { city: newThreshold }
+
+    document.getElementById('thresholdBtn').addEventListener('click', loadThresholds);
+    document.getElementById('thresholdClose').addEventListener('click', () =>
+        document.getElementById('thresholdBg').classList.remove('open'));
+    document.getElementById('thresholdCloseBtn').addEventListener('click', () =>
+        document.getElementById('thresholdBg').classList.remove('open'));
+    document.getElementById('thresholdBg').addEventListener('click', e => {
+        if (e.target === document.getElementById('thresholdBg'))
+            document.getElementById('thresholdBg').classList.remove('open');
+    });
+
+    async function loadThresholds() {
+        try {
+            const res = await fetch('/admin/city-thresholds', {
+                headers: { 'x-admin-password': adminPassword }
+            });
+            const data = await res.json();
+            if (!data.success) throw new Error(data.error);
+
+            thresholdChanges = {};
+            renderThresholds(data.cities);
+            document.getElementById('thresholdBg').classList.add('open');
+        } catch (err) {
+            showToast('Failed to load thresholds: ' + err.message, true);
+        }
+    }
+
+    function renderThresholds(cities) {
+        const list = document.getElementById('thresholdList');
+        if (!cities.length) {
+            list.innerHTML = '<div class="threshold-status">No cities found.</div>';
+            return;
+        }
+
+        list.innerHTML = cities.map(c => `
+            <div class="threshold-item">
+                <div class="threshold-city">${c.city}</div>
+                <div class="threshold-current">Current: <strong>${c.distributors}</strong></div>
+                <div class="threshold-thresh">Threshold: <strong id="thresh-${c.city}">${c.threshold}</strong></div>
+                <div class="threshold-input-wrap">
+                    <input type="number" id="input-${c.city}" value="${c.threshold}" min="1" max="999" 
+                        onchange="updateThresholdChange('${c.city}', this.value)" />
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function updateThresholdChange(city, value) {
+        const num = parseInt(value);
+        if (isNaN(num) || num < 1) {
+            showToast('Threshold must be a positive integer', true);
+            document.getElementById(`input-${city}`).value = thresholdChanges[city] || 10;
+            return;
+        }
+        thresholdChanges[city] = num;
+        document.getElementById(`thresh-${city}`).textContent = num;
+    }
+
+    async function saveAllThresholds() {
+        const cities = Object.keys(thresholdChanges);
+        if (!cities.length) {
+            showToast('No changes to save', true);
+            return;
+        }
+
+        const saveBtn = document.getElementById('thresholdSaveAll');
+        saveBtn.disabled = true;
+        saveBtn.textContent = '⏳ Saving...';
+
+        try {
+            for (const city of cities) {
+                const res = await fetch(`/admin/city-thresholds/${encodeURIComponent(city)}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'x-admin-password': adminPassword,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ threshold: thresholdChanges[city] })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Update failed');
+            }
+
+            thresholdChanges = {};
+            showToast(`✓ Thresholds updated for ${cities.length} cities`);
+            document.getElementById('thresholdBg').classList.remove('open');
+        } catch (err) {
+            showToast('Failed to save thresholds: ' + err.message, true);
+        } finally {
+            saveBtn.disabled = false;
+            saveBtn.textContent = '💾 Save All Changes';
+        }
+    }
+
+    document.getElementById('thresholdSaveAll').addEventListener('click', saveAllThresholds);
+
+    // ── Inventory Management ─────────────────────────────────────────────────
+    function renderInventoryList(targetId, items, emptyLabel, kindLabel) {
+        const target = document.getElementById(targetId);
+        if (!items.length) {
+            target.innerHTML = `<div class="inventory-muted">${emptyLabel}</div>`;
+            return;
+        }
+        target.innerHTML = items.map(row => `
+            <div class="inventory-row">
+                <span><strong>${row.item}</strong> <span class="inventory-muted">(${kindLabel})</span></span>
+                <span>${row.quantity} ${row.unit}</span>
+            </div>
+        `).join('');
+    }
+
+    function renderInventoryLogs() {
+        const body = document.getElementById('inventoryLogBody');
+        const rows = inventorySummary.recentTransactions || [];
+
+        if (!rows.length) {
+            body.innerHTML = '<tr><td colspan="6" class="inventory-muted">No inventory transactions yet.</td></tr>';
+            return;
+        }
+
+        body.innerHTML = rows.map(tx => {
+            const isIn = tx.direction === 'incoming';
+            const dt = tx.timestamp
+                ? new Date(tx.timestamp).toLocaleString('en-IN', {
+                    timeZone: 'Asia/Kolkata',
+                    day: '2-digit',
+                    month: 'short',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                })
+                : '--';
+
+            return `
+                <tr>
+                    <td><span class="pill ${isIn ? 'pill-in' : 'pill-out'}">${isIn ? 'INCOMING' : 'OUTGOING'}</span></td>
+                    <td class="mono">${tx.txId || '--'}</td>
+                    <td>${tx.item || '--'}</td>
+                    <td>${tx.quantity || 0} ${tx.unit || 'units'}</td>
+                    <td>${dt}</td>
+                    <td>${tx.note || '--'}</td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    function renderInventory() {
+        renderInventoryList('rawSummaryList', inventorySummary.rawIncoming || [], 'No raw material entries yet.', 'received');
+        renderInventoryList('productSummaryList', inventorySummary.productOutgoing || [], 'No product dispatch entries yet.', 'exported');
+        renderInventoryLogs();
+        document.getElementById('inventoryStamp').textContent =
+            `Updated: ${new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}`;
+    }
+
+    async function submitInventory(kind) {
+        const isIncoming = kind === 'incoming';
+        const endpoint = isIncoming ? '/admin/inventory/incoming' : '/admin/inventory/outgoing';
+        const prefix = isIncoming ? 'incoming' : 'outgoing';
+
+        const item = document.getElementById(`${prefix}Item`).value.trim();
+        const quantity = Number(document.getElementById(`${prefix}Qty`).value);
+        const unit = document.getElementById(`${prefix}Unit`).value.trim();
+        const note = document.getElementById(`${prefix}Note`).value.trim();
+
+        if (!item || !quantity || quantity <= 0 || !unit) {
+            showToast('Item, quantity and unit are required', true);
+            return;
+        }
+
+        try {
+            const res = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'x-admin-password': adminPassword,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ item, quantity, unit, note })
+            });
+            const data = await res.json();
+            if (!res.ok || !data.success) throw new Error(data.error || 'Failed to save transaction');
+
+            document.getElementById(`${prefix}Form`).reset();
+            document.getElementById(`${prefix}Unit`).value = isIncoming ? 'units' : 'bottles';
+            showToast(isIncoming ? '✓ Incoming material registered' : '✓ Outgoing export registered');
+            await loadInventorySummary(false);
+        } catch (err) {
+            showToast(err.message || 'Inventory save failed', true);
+        }
+    }
+
+    document.getElementById('incomingSubmit').addEventListener('click', () => submitInventory('incoming'));
+    document.getElementById('outgoingSubmit').addEventListener('click', () => submitInventory('outgoing'));
 </script>
 </body>
 </html>
